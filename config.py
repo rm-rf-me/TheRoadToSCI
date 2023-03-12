@@ -4,9 +4,9 @@ class Config:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='')
 
-        self.parser.add_argument('--baud', type=int, default=38400)
-        self.parser.add_argument('--port', type=str, default='COM0')
-        self.parser.add_argument('--commTimeout', type=int, default=0.01)
+        self.parser.add_argument('--baud', type=int, default=57600)
+        self.parser.add_argument('--port', type=str, default='COM3')
+        self.parser.add_argument('--commTimeout', type=int, default=None)
 
         self.parser.add_argument('--rxPath', type=str, default='TCPIP0::169.254.216.79::6666::SOCKET')
         self.parser.add_argument('--rxTimeout', type=int, default=1000)
