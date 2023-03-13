@@ -17,8 +17,9 @@ def haha():
     lala = rm.open_resource('TCPIP0::169.254.216.79::6666::SOCKET', read_termination='\n')
     # lala.timeout = 10000
     # lala.write('FETC:ARR:AWE:POW?')
-    for i in range(10):
-        print(time.time(), lala.query('FETC?\n'), time.time())
+    print(lala.query('FETC?\n'))
+    # for i in range(10):
+    #     print(time.time(), lala.query('FETC?\n'), time.time())
 
 
 

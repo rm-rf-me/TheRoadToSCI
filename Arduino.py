@@ -18,6 +18,8 @@ class Arduino:
         self.round_step = int(360 / self.motType * self.MStep)
 
     def _send(self, text):
+        # self.comm.write(text.encode())
+        # now = time.time()
         return self.comm.write(text.encode())
 
     def _receive(self):
@@ -27,10 +29,7 @@ class Arduino:
         while 1:
             if (self.comm.inWaiting() > 0):
                 res = self.comm.readline()[:-2]
-                if res == b'y':
-                    return 1, time.time()
-                else:
-                    return 0, time.time()
+                return res
 
     def _close(self):
         self.comm.close()
@@ -65,69 +64,60 @@ class Arduino:
         # self._isAvailable()
         cmd = 'a'
         if dirr == 'CW':
-            cmd += '0'
-        elif dirr == 'CCW':
             cmd += '1'
+        elif dirr == 'CCW':
+            cmd += '0'
         if angle > 999 or angle < 0:
             return 0
         cmd += str(angle).zfill(3)
-        if speed > 999 or speed < 0:
+        if speed > 9999 or speed < 200:
             return 0
-        cmd += str(speed).zfill(3)
+        cmd += str(speed).zfill(4)
         print("round cmd:", cmd)
-        start = time.time()
         self._send(cmd)
-        res, end = self._wait_receive()
-        if res == 1:
-            return 1, start, end
-        else:
-            return 0, start, end
+        use_time = self._wait_receive()
+        return use_time
+
 
     def goback(self, dirr, angle, speed, mid_delay):
         # self._isAvailable()
         cmd = 'b'
         if dirr == 'CW':
-            cmd += '0'
-        elif dirr == 'CCW':
             cmd += '1'
+        elif dirr == 'CCW':
+            cmd += '0'
         if angle > 999 or angle < 0:
             return 0
         cmd += str(angle).zfill(3)
-        if speed > 999 or speed < 0:
+        if speed > 9999 or speed < 200:
             return 0
-        cmd += str(speed).zfill(3)
+        cmd += str(speed).zfill(4)
         if mid_delay > 999 or mid_delay < 0:
             return 0
         cmd += str(mid_delay).zfill(3)
         print("goback cmd:", cmd)
-        start = time.time()
+
         self._send(cmd)
-        res, end = self._wait_receive()
-        if res == 1:
-            return 1, start, end
-        else:
-            return 0, start, end
+        use_time = self._wait_receive()
+        return use_time
 
     def turnAround(self, dirr, speed):
         # self._isAvailable()
         cmd = 'c'
         if dirr == 'CW':
-            cmd += '0'
-        elif dirr == 'CCW':
             cmd += '1'
+        elif dirr == 'CCW':
+            cmd += '0'
 
-        if speed > 999 or speed < 0:
+        if speed > 9999 or speed < 200:
             return 0
-        cmd += str(speed).zfill(3)
+        cmd += str(speed).zfill(4)
 
         print("turnAround cmd:", cmd)
-        start = time.time()
         self._send(cmd)
-        res, end = self._wait_receive()
-        if res == 1:
-            return 1, start, end
-        else:
-            return 0, start, end
+        use_time = self._wait_receive()
+        return use_time
+
 
 
 
@@ -137,13 +127,34 @@ if __name__ == '__main__':
     haha = Arduino(args)
     # haha = serial.Serial("COM3", baudrate=57600)
 
+    res = haha.Round('CW', 180, 4000)
+    print(res)
+    #
+    # res, s, e = haha.Round('CCW', 720, 400)
+    # print((res, s, e, s - e))
+    #
+    # res, s, e = haha.Round('CW', 720, 400)
+    # print((res, s, e, s-e))
+    #
+    # res, s, e = haha.Round('CCW', 720, 400)
+    # print((res, s, e, s - e))
+    #
+    # res, s, e = haha.Round('CW', 720, 800)
+    # print((res, s, e, s-e))
+    #
+    # res, s, e = haha.Round('CCW', 720, 800)
+    # print((res, s, e, s - e))
+    #
+    # res, s, e = haha.Round('CW', 720, 800)
+    # print((res, s, e, s-e))
+    #
+    # res, s, e = haha.Round('CCW', 720, 800)
+    # print((res, s, e, s - e))
+    #
+    # res, s, e = haha.goback('CW', 720, 500, 500)
+    # print((res, s, e, s - e))
 
-    print(haha.Round('CW', 720, 20))
-    time.sleep(1)
-    print(haha.Round('CCW', 720, 40))
-    time.sleep(1)
-    print(haha.goback('CW', 720, 20, 50))
-    time.sleep(1)
-    print(haha.turnAround('CW', 100))
+    # res = haha.turnAround('CW', 1000)
+    # print(res)
 
     # print(haha.write('b0180090'.encode()))
