@@ -17,7 +17,6 @@ class Arduino:
         self.MStep = args.MStep
         self.round_step = int(360 / self.motType * self.MStep)
 
-
     def _send(self, text):
         return self.comm.write(text.encode())
 
@@ -27,12 +26,17 @@ class Arduino:
     def _wait_receive(self):
         while 1:
             if (self.comm.inWaiting() > 0):
-                return self.comm.readline()[:-2]
+                res = self.comm.readline()[:-2]
+                if res == b'y':
+                    return 1, time.time()
+                else:
+                    return 0, time.time()
 
     def _close(self):
         self.comm.close()
         print(self.comm.name + " closed.")
 
+    # 暂时废弃掉，靠wait receive阻塞就行
     def _isAvailable(self):
         while 1:
             self._send('q')
@@ -58,7 +62,7 @@ class Arduino:
                 return False
 
     def Round(self, dirr, angle, speed):
-        self._isAvailable()
+        # self._isAvailable()
         cmd = 'a'
         if dirr == 'CW':
             cmd += '0'
@@ -71,12 +75,16 @@ class Arduino:
             return 0
         cmd += str(speed).zfill(3)
         print("round cmd:", cmd)
+        start = time.time()
         self._send(cmd)
-
-        return self._wait_receive()
+        res, end = self._wait_receive()
+        if res == 1:
+            return 1, start, end
+        else:
+            return 0, start, end
 
     def goback(self, dirr, angle, speed, mid_delay):
-        self._isAvailable()
+        # self._isAvailable()
         cmd = 'b'
         if dirr == 'CW':
             cmd += '0'
@@ -92,12 +100,16 @@ class Arduino:
             return 0
         cmd += str(mid_delay).zfill(3)
         print("goback cmd:", cmd)
+        start = time.time()
         self._send(cmd)
-
-        return self._wait_receive()
+        res, end = self._wait_receive()
+        if res == 1:
+            return 1, start, end
+        else:
+            return 0, start, end
 
     def turnAround(self, dirr, speed):
-        self._isAvailable()
+        # self._isAvailable()
         cmd = 'c'
         if dirr == 'CW':
             cmd += '0'
@@ -109,9 +121,13 @@ class Arduino:
         cmd += str(speed).zfill(3)
 
         print("turnAround cmd:", cmd)
+        start = time.time()
         self._send(cmd)
-
-        return self._wait_receive()
+        res, end = self._wait_receive()
+        if res == 1:
+            return 1, start, end
+        else:
+            return 0, start, end
 
 
 
