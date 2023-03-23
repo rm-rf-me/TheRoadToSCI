@@ -8,7 +8,7 @@ class Rx2438:
         res = rm.list_resources()
         print('find resources: ', res)
         self.haha = rm.open_resource(args.rxPath, read_termination='\n')
-        print(self.haha)
+        print("Rx连接成功: " + self.haha)
         # self.setFreq(self.args.freq)
         # print("Rx2438 freq :", self.args.freq)
 

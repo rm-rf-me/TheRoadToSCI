@@ -40,11 +40,11 @@ class LZP3:
 
 
     def init(self, acc=1, dec=1, v=1):
-        print("Set zero " + str(self.set_zero()) + ", now: " + str(self.get_p()))
+        print("设置当前位置为零点 " + str(self.set_zero()) + ", now: " + str(self.get_p()))
 
-        print("Set mode P " + str(self.set_mode_p()))
+        print("设置定位运动模式 " + str(self.set_mode_p()))
 
-        print("Set default adv " + str(acc) + ", " + str(dec) + ", " + str(v) + ", " + str(self.set_acc_dec_v(acc, dec, v)))
+        print("当前电机acc dec v " + str(acc) + ", " + str(dec) + ", " + str(v) + ", " + str(self.set_acc_dec_v(acc, dec, v)))
 
     def set_mode_p(self):
         cmd = "MODE_P " + str(self.obj) + " 0"

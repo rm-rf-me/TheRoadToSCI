@@ -1,6 +1,6 @@
 import argparse
 
-class Config:
+class BaseConfig:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='')
 
@@ -21,15 +21,7 @@ class Config:
 
         self.parser.add_argument('--debugPan', type=bool, default=0)
 
-        # 数据集配置
-        self.parser.add_argument('--DataPath', type=str, default='./data/data.csv')
-
-
-
-        self.args = self.parser.parse_args()
+        self.args = None
 
     def getArgs(self):
         return self.args
-
-
-
