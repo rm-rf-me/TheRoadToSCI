@@ -3,25 +3,25 @@ import time
 import eventlet
 
 base_config = {
-    "MStep" : 20,
-    "DriveRatio" : 180,
-    "Baud" : 115200,
-    "Port" : "COM5",
-    "Timeout" : None,
-    "motType" : 1.8,
-    "obj" : 0,
-    "safe" : {
-        "acc" : 5,
-        "dec" : 5,
-        "v" : 10
+    "MStep": 20,
+    "DriveRatio": 180,
+    "Baud": 115200,
+    "Port": "COM5",
+    "Timeout": None,
+    "motType": 1.8,
+    "obj": 0,
+    "safe": {
+        "acc": 5,
+        "dec": 5,
+        "v": 10
     }
 }
 
 
 class LZP3:
-    def __init__(self):
+    def __init__(self, args):
         # self.port = serial.tools.list_ports.comports()[args.port].device
-        self.port = base_config['Port']
+        self.port = args.port
         self.baud = base_config['Baud']
         self.timeout = base_config['Timeout']
         self.obj = base_config['obj']

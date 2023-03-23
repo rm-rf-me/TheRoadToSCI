@@ -18,13 +18,29 @@ class GetData():
 
         # if self.debugPan is True:
         self.rx = Rx2438(args=args)
-        self.pan = LZP3()
+        self.pan = LZP3(args=args)
+
+        print("test rx: " + self.rx.getPower())
+
+        acc, dec, v = input("输入电机参数acc dev v，中间用空格隔开：").split()
+
+        self.init_pan(acc, dec, v)
 
     def init_pan(self, acc=5, dec=5, v=5):
         self.pan.init(acc, dec, v)
 
     # angle正数为顺时针，负数为逆时针
-    def get_series_rel(self, end_a, delay=1, stride=2, block=0, show=0):
+    def get_series_step_rel(self, end_a, delay=1.0, stride=2, block=0, show=0):
+        '''
+        一步一停测得一组数据
+
+        :param end_a: 最终停止的角度，正数为顺时针，负数为逆时针
+        :param delay: 电机每步停止后的休眠时间，用于功率计测量
+        :param stride: 步长，以度为单位
+        :param block: 每步后是否输入阻塞（暂时废弃）
+        :param show: 序列之后是否展示
+        :return:
+        '''
 
         note = input("描述这组数据：")
         data = {
@@ -92,9 +108,12 @@ class GetData():
 
         return data
 
-    def goback(self, end_a, delay=0.3, stride=2, block=0, show=0):
-        self.get_series_rel(end_a, delay, stride, block, show)
-        self.get_series_rel(-end_a, delay, stride, block, show)
+    def get_series_continuous_rel(self, end_a, speed, ):
+        pass
+
+    def goback_step(self, end_a, delay=0.3, stride=2, block=0, show=0):
+        self.get_series_step_rel(end_a, delay, stride, block, show)
+        self.get_series_step_rel(-end_a, delay, stride, block, show)
 
 if __name__ == '__main__':
     config = Config()
@@ -102,4 +121,4 @@ if __name__ == '__main__':
     haha = GetData(args)
     haha.init_pan()
 
-    haha.goback(-108, show=1)
+    haha.goback_step(-108, show=1)
