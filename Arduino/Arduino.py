@@ -1,6 +1,5 @@
 import serial
 import time
-from config import Config
 
 
 class Arduino:
@@ -122,6 +121,7 @@ class Arduino:
 
 
 if __name__ == '__main__':
+    from MotorDemo.DemoConfig import Config
     config = Config()
     args = config.getArgs()
     haha = Arduino(args)

@@ -1,6 +1,5 @@
 import pyvisa as visa
-import time
-from config import Config
+from MotorDemo.DemoConfig import Config
 
 class Rx2438:
     def __init__(self, args):
