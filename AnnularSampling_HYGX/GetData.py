@@ -11,6 +11,7 @@ import tqdm
 
 mpl.use('TkAgg')
 
+
 class GetData():
     def __init__(self, args):
         self.args = args
@@ -26,14 +27,14 @@ class GetData():
 
         self.init_pan(acc, dec, v)
 
-        qq = input("Config文件中配置当前频率为%s，当前功率为%f，若正确请敲回车，若不正确请输n：" % (self.args.freq, self.args.power))
+        qq = input("Config文件中配置当前频率为%s，当前功率为%f，若正确请敲回车，若不正确请输n：" % (
+        self.args.freq, self.args.power))
         if qq == 'n' or qq == 'N':
             self.freq = input("当前使用的频率是：")
             self.power = input("当前使用的功率是：")
         else:
             self.freq = self.args.freq
             self.power = self.args.power
-
 
     def init_pan(self, acc=5, dec=5, v=5):
         self.pan.init(acc, dec, v)
@@ -67,7 +68,8 @@ class GetData():
         return max_angle, delay, stride, step_block, show_pic, save_pic, data_type
 
     # angle正数为顺时针，负数为逆时针
-    def get_series_step_rel(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None, data_type=None):
+    def get_series_step_rel(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None,
+                            save_pic=None, data_type=None):
         '''
         一步一停测得一组数据
 
@@ -79,7 +81,9 @@ class GetData():
         :return:
         '''
 
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
+        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
+                                                                                               step_block, show_pic,
+                                                                                               save_pic, data_type)
 
         note = input("描述这组数据，这段话将写入数据文件中：")
         data = {
@@ -145,35 +149,38 @@ class GetData():
 
         path = input("需要保存请起名，不保存输n:")
         if path != 'n' or path != 'N':
-            name = './data/' + str(time.time()).split('.')[0]+'-F'+str(self.freq)+'-P'+str(self.power)+path
+            name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
             if save_pic:
-                plt.savefig(name+'.jpg')
+                plt.savefig(name + '.jpg')
 
             df = pandas.DataFrame(data)
             while 1:
                 if data_type == 'xlsx':
-                    df.to_excel(name+'.xlsx')
+                    df.to_excel(name + '.xlsx')
                     break
                 elif data_type == 'csv':
-                    df.to_csv(name+'.csv')
+                    df.to_csv(name + '.csv')
                     break
                 elif data_type == 'txt':
-                    df.to_csv(name+'.txt', sep='\t', index=False, header=None)
+                    df.to_csv(name + '.txt', sep='\t', index=False, header=None)
                     break
                 else:
                     data_type = input("文件格式有问题，仅限于txt,xlsx,csv，请重新选择: ")
-
 
         return data
 
     def get_series_continuous_rel(self, end_a, speed, ):
         pass
 
-    def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None, data_type=None):
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
+    def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None,
+                    data_type=None):
+        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
+                                                                                               step_block, show_pic,
+                                                                                               save_pic, data_type)
 
         self.get_series_step_rel(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
         self.get_series_step_rel(-max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
+
 
 if __name__ == '__main__':
     config = Config()
@@ -181,4 +188,4 @@ if __name__ == '__main__':
     haha = GetData(args)
     haha.init_pan()
 
-    haha.goback_step(-108, show=1)
+    haha.goback_step()

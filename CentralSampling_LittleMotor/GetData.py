@@ -1,6 +1,6 @@
 from Device_LittleMotor.LittleMotor import LittleMotor
 from Device_Ceyear.RX2438 import Rx2438
-from DemoConfig import Config
+from config import Config
 
 import threading
 import time
