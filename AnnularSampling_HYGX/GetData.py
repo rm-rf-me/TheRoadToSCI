@@ -1,6 +1,7 @@
 from Device_HengYangGuangXue.LZP3 import LZP3
 from Device_Ceyear.RX2438 import Rx2438
 from config import Config
+from util.cmdIO import *
 
 import time
 import matplotlib.pyplot as plt
@@ -21,20 +22,14 @@ class GetData():
         self.rx = Rx2438(args=args)
         self.pan = LZP3(args=args)
 
-        print("test rx: " + self.rx.getPower())
+        io_rx_test(self.args, self.rx)
 
-        acc, dec, v = input("输入电机参数acc dev v，中间用空格隔开：").split()
+
+        acc, dec, v = io_set_adv(self.args)
 
         self.init_pan(acc, dec, v)
 
-        qq = input("Config文件中配置当前频率为%s，当前功率为%f，若正确请敲回车，若不正确请输n：" % (
-        self.args.freq, self.args.power))
-        if qq == 'n' or qq == 'N':
-            self.freq = input("当前使用的频率是：")
-            self.power = input("当前使用的功率是：")
-        else:
-            self.freq = self.args.freq
-            self.power = self.args.power
+        self.freq, self.power = io_set_tx(self.args)
 
     def init_pan(self, acc=5, dec=5, v=5):
         self.pan.init(acc, dec, v)
@@ -85,7 +80,7 @@ class GetData():
                                                                                                step_block, show_pic,
                                                                                                save_pic, data_type)
 
-        note = input("描述这组数据，这段话将写入数据文件中：")
+        note = io_get_note(self.args)
         data = {
             'time': [],
             'angle': [],
@@ -109,8 +104,8 @@ class GetData():
                 angle = -angle
             print(now, angle, val)
 
-            if step_block:
-                input("回车继续：")
+            io_block(self.args, step_block)
+
             data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
             data['angle'].append(angle)
             data['value'].append(float(val))
@@ -147,7 +142,7 @@ class GetData():
             if show_pic:
                 plt.show()
 
-        path = input("需要保存请起名，不保存输n:")
+        path = io_get_file_name(self.args)
         if path != 'n' or path != 'N':
             name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
             if save_pic:

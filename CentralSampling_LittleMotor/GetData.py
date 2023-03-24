@@ -13,6 +13,7 @@ class SurfaceData:
     def __init__(self, args):
         self.args = args
         self.rx = Rx2438(self.args)
+        print("连接功率计： " + str(self.rx))
         self.arduino = LittleMotor(args)
         self.file_path = self.args.DataPath
 
