@@ -1,5 +1,5 @@
-from HengYangGuangXue.LZP3 import LZP3
-from Ceyear.RX2438 import Rx2438
+from Device_HengYangGuangXue.LZP3 import LZP3
+from Device_Ceyear.RX2438 import Rx2438
 from config import Config
 
 import time

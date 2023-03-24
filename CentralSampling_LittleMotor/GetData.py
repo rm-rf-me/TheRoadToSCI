@@ -1,6 +1,6 @@
-from Arduino.Arduino import Arduino
-from Ceyear.RX2438 import Rx2438
-from MotorDemo.DemoConfig import Config
+from Device_LittleMotor.LittleMotor import LittleMotor
+from Device_Ceyear.RX2438 import Rx2438
+from DemoConfig import Config
 
 import threading
 import time
@@ -13,7 +13,7 @@ class SurfaceData:
     def __init__(self, args):
         self.args = args
         self.rx = Rx2438(self.args)
-        self.arduino = Arduino(args)
+        self.arduino = LittleMotor(args)
         self.file_path = self.args.DataPath
 
 

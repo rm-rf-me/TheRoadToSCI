@@ -2,7 +2,7 @@ import serial
 import time
 
 
-class Arduino:
+class LittleMotor:
     def __init__(self, args):
         # self.port = serial.tools.list_ports.comports()[args.port].device
         self.port = args.port
