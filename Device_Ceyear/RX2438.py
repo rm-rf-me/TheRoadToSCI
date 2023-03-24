@@ -1,5 +1,5 @@
 import pyvisa as visa
-from MotorDemo.DemoConfig import Config
+from AnnularSampling_HYGX.config import Config
 
 class Rx2438:
     def __init__(self, args):
@@ -8,7 +8,7 @@ class Rx2438:
         res = rm.list_resources()
         print('find resources: ', res)
         self.haha = rm.open_resource(args.rxPath, read_termination='\n')
-        print("Rx连接成功: " + self.haha)
+        print("Rx连接成功: " + str(self.haha))
         # self.setFreq(self.args.freq)
         # print("Rx2438 freq :", self.args.freq)
 

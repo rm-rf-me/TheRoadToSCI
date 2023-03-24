@@ -25,7 +25,7 @@ class GetData():
 
         acc, dec, v = input("输入电机参数acc dev v，中间用空格隔开：").split()
 
-        self.init_pan(acc, dec, v)
+        self.init_pan(float(acc), float(dec), float(v))
 
         qq = input("Config文件中配置当前频率为%s，当前功率为%f，若正确请敲回车，若不正确请输n：" % (
         self.args.freq, self.args.power))
@@ -186,6 +186,6 @@ if __name__ == '__main__':
     config = Config()
     args = config.getArgs()
     haha = GetData(args)
-    haha.init_pan()
+    # haha.init_pan()
 
     haha.goback_step()

@@ -2,6 +2,8 @@ import serial
 import time
 import eventlet
 
+from AnnularSampling_HYGX.config import Config
+
 base_config = {
     "MStep": 20,
     "DriveRatio": 180,
@@ -11,8 +13,8 @@ base_config = {
     "motType": 1.8,
     "obj": 0,
     "safe": {
-        "acc": 5,
-        "dec": 5,
+        "acc": 10,
+        "dec": 10,
         "v": 10
     }
 }
@@ -158,8 +160,9 @@ class LZP3:
 
 
 if __name__ == '__main__':
-    haha = LZP3()
-    print("start: " + haha.get_p())
+    config = Config()
+    haha = LZP3(config.getArgs())
+    print("start: " + str(haha.get_p()))
     haha.p_rel(1)
     time.sleep(2)
-    print("end: " + haha.get_p())
+    print("end: " + str(haha.get_p()))

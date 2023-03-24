@@ -1,6 +1,6 @@
 import argparse
 
-from util.base_config import BaseConfig
+from AnnularSampling_HYGX.util.base_config import BaseConfig
 
 class Config(BaseConfig):
     def __init__(self):
@@ -28,7 +28,7 @@ class Config(BaseConfig):
         self.parser.add_argument('--stride', type=float, default=2)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-        self.parser.add_argument('--max_angle', type=float, default=10)
+        self.parser.add_argument('--max_angle', type=float, default=-6)
 
         # 单条数据测量结束后是否展示曲线
         self.parser.add_argument('--show_pic', type=bool, default=True)
@@ -40,7 +40,7 @@ class Config(BaseConfig):
         self.parser.add_argument('--step_block', type=bool, default=False)
 
         # 数据保存格式，支持txt、xlsx、csv
-        self.parser.add_argument('--data_type', type=str, default='txt')
+        self.parser.add_argument('--data_type', type=str, default='xlsx')
 
 
 
