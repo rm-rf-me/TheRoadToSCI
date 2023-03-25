@@ -42,6 +42,8 @@ class Config(BaseConfig):
         # 数据保存格式，支持txt、xlsx、csv
         self.parser.add_argument('--data_type', type=str, default='xlsx')
 
+        # 是否为命令行执行模式
+        self.parser.add_argument('--cmd', type=bool, default=True)
 
 
         self.args = self.parser.parse_args()

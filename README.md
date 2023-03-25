@@ -102,26 +102,26 @@
 
 ```c
 .
-├── AnnularSampling_HYGX							// 200mm转台的环型采样
-│   ├── GetData.py										// 采样主函数
-│   ├── config.py											// 采样配置文件
-│   ├── data													// 默认数据保存路径
-│   └── util													// 工具类
-│       └── base_config.py						// 基础配置项
-├── CentralSampling_LittleMotor				// 42小步进电机中心采样
-│   ├── DemoConfig.py									// 采样配置文件
-│   ├── GetData.py										// 采样主函数
-│   └── data													// 默认数据保存路径
-├── Device_Ceyear											// 思仪设备接口类
-│   ├── RX2438.py											// 2438功率计
+├── AnnularSampling_HYGX	  // 200mm转台的环型采样
+│   ├── GetData.py	// 采样主函数
+│   ├── config.py			// 采样配置文件
+│   ├── data			// 默认数据保存路径
+│   └── util			// 工具类
+│       └── base_config.py		// 基础配置项
+├── CentralSampling_LittleMotor	  // 42小步进电机中心采样
+│   ├── DemoConfig.py	// 采样配置文件
+│   ├── GetData.py	// 采样主函数
+│   └── data		// 默认数据保存路径
+├── Device_Ceyear		// 思仪设备接口类
+│   ├── RX2438.py		// 2438功率计
 │   └── __init__.py
-├── Device_HengYangGuangXue						// 恒洋光学设备接口类
-│   ├── LZP3.py												// 200mm电机转台
+├── Device_HengYangGuangXue		// 恒洋光学设备接口类
+│   ├── LZP3.py		// 200mm电机转台
 │   └── __init__.py
-└── Device_LittleMotor								// 小电机接口类
-    ├── LittleMotor.py								// 小电机
+└── Device_LittleMotor	// 小电机接口类
+    ├── LittleMotor.py		// 小电机
     ├── __init__.py
-    └── arduino												// 小电机Arduino控制工程
+    └── arduino		// 小电机Arduino控制工程
         └── Emm42_Arduino_WHILE.ino
 ```
 
@@ -166,6 +166,10 @@
 #### 支持设备
 
 * 42小电机
+
+#### 主要类方法
+
+
 
 ### 圆环旋转跨步序列采样
 
