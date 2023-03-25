@@ -1,6 +1,6 @@
 # 410自动实验系统手册（v1.1）
 
---2023.3.24，ljc
+--2023.3.25，ljc
 
 ### 版本记录
 
@@ -12,6 +12,10 @@
 * v0.1（旧版本）：arduino驱动小步进电机，实现中心旋转跨步序列采样
 
 当前手册基于v1.1编写。
+
+
+
+请至/doc/路径下载pdf版文档
 
 
 
@@ -35,9 +39,11 @@
 * git
   * git是著名的版本控制工具，能够方便进行版本更新、回滚、多分支开发等版本管理操作
   * 可至官网免费安装
-* github
+* github/gitee
   * 基于git的版本共享仓库，有时需要科学上网
-  * 本项目仓库路径为https://github.com/rm-rf-me/TheRoadToSCI
+  * 本项目仓库路径为
+    * github：https://github.com/rm-rf-me/TheRoadToSCI
+    * gitee：https://gitee.com/ljcljcljcljcljc/TheRoadToSCI
 * 代码拉取方法
   * 安装git
   * 打开cmd命令行，cd到对应路径，git clone https://github.com/rm-rf-me/TheRoadToSCI.git
