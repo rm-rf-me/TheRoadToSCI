@@ -14,9 +14,18 @@ class Rx2438:
 
 
     def setFreq(self, freq):
+        '''
+        设置功率计测量频率，需携带单位
+        :param freq:
+        :return:
+        '''
         return self._write('FREQ ' + freq + '\n')
 
     def getPower(self):
+        '''
+        使用fetch命令，立即读取屏幕数值，不保证完整完成一次测量，io开销在ms级别
+        :return:
+        '''
         return self._query('FETC?\n')
 
     def _query(self, cmd):
