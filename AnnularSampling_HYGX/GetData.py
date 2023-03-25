@@ -27,7 +27,7 @@ class GetData():
 
         acc, dec, v = io_set_adv(self.args)
 
-        self.init_pan(acc, dec, v)
+        self.init_pan(float(acc), float(dec), float(v))
 
         self.freq, self.power = io_set_tx(self.args)
 
@@ -181,6 +181,6 @@ if __name__ == '__main__':
     config = Config()
     args = config.getArgs()
     haha = GetData(args)
-    haha.init_pan()
+    # haha.init_pan()
 
     haha.goback_step()
