@@ -312,7 +312,7 @@ GetData.goback_step(
 
   ![lzptest](./img/txtest.png)
 
-* 运行Device_HengYangGuangXue/LZP3.py文件，电机旋转一度即为连接成功	![lzptest](./doc/img/lzptest.png)
+* 运行Device_HengYangGuangXue/LZP3.py文件，电机旋转一度即为连接成功	![lzptest](./img/lzptest.png)
 
 #### 3.初始位置
 
