@@ -1,13 +1,9 @@
-from Device_HengYangGuangXue.LZP3 import LZP3
-from Device_Ceyear.RX2438 import Rx2438
 from config import Config
 from util.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
 
 import time
-import matplotlib.pyplot as plt
 import matplotlib as mpl
-import pandas
 import random
 
 mpl.use('TkAgg')
@@ -161,8 +157,6 @@ class StepSampling(SampleBase):
 
         return data
 
-    def get_series_continuous_rel(self, max_angle=None, tot_time=None, sampling_gap=None, ):
-        pass
 
     def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None,
                     data_type=None):
@@ -191,7 +185,7 @@ class StepSampling(SampleBase):
 if __name__ == '__main__':
     config = Config()
     args = config.getArgs()
-    haha = GetData(args)
+    haha = StepSampling(args)
     # haha.init_pan()
 
     haha.goback_step()
