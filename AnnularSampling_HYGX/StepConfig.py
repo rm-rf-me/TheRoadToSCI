@@ -1,5 +1,5 @@
 import argparse
-from util.base_config import BaseConfig
+from utils.base_config import BaseConfig
 
 class StepConfig(BaseConfig):
     def __init__(self):
@@ -27,7 +27,7 @@ class StepConfig(BaseConfig):
         self.parser.add_argument('--stride', type=float, default=2)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-        self.parser.add_argument('--max_angle', type=float, default=-6)
+        self.parser.add_argument('--max_angle', type=float, default=-110)
 
         # 单条数据测量结束后是否展示曲线
         self.parser.add_argument('--show_pic', type=bool, default=True)

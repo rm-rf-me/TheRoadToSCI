@@ -1,6 +1,6 @@
 from Device_HengYangGuangXue.LZP3 import LZP3
 from Device_Ceyear.RX2438 import Rx2438
-from util.cmdIO import *
+from utils.cmdIO import *
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -21,13 +21,10 @@ class SampleBase():
 
         io_rx_test(self.args, self.rx)
 
-        acc, dec, v = io_set_adv(self.args)
-
-        self.init_pan(float(acc), float(dec), float(v))
+        self.pan.init_without_adc()
 
         self.freq, self.power = io_set_tx(self.args)
-        self.rx.setFreq(self.freq)
-        print("Rx2438 freq :", self.args.freq)
+        self.rx.setFreq((self.freq))
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan.init(acc, dec, v)
@@ -36,21 +33,22 @@ class SampleBase():
         pass
 
     def show_pic(self, x, y, xlabel='angle', ylabel='dBm', show_pic=True):
-        plt.clf()
+        # plt.clf()
+        fig = plt.figure()
         plt.plot(x, y)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         if show_pic:
             plt.show()
 
-        return
+        return fig
 
     def get_file_name(self, path):
         # name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
-        name = './data/' + str(time.time()).split('.')[0] + path
+        name = './data/' + time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time())) + '_' + path
         return name
 
-    def save_file(self, data, save_pic, data_type, path=None):
+    def save_file(self, data, fig, save_pic, data_type, path=None):
         # 数据保存
         if path is None:
             path = io_get_file_name(self.args)
@@ -59,7 +57,7 @@ class SampleBase():
             name = self.get_file_name(path)
 
             if save_pic:
-                plt.savefig(name + '.jpg')
+                fig.savefig(name + '.jpg')
 
             df = pandas.DataFrame(data)
             while 1:

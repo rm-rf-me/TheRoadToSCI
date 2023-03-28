@@ -2,7 +2,7 @@ import serial
 import time
 import eventlet
 
-from AnnularSampling_HYGX.StepConfig import Config
+from AnnularSampling_HYGX.StepConfig import StepConfig
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；
@@ -39,7 +39,7 @@ class LZP3:
 
         self.comm = serial.Serial(self.port, baudrate=self.baud, timeout=self.timeout)
         time.sleep(1)       # wait serial
-        print("Check: " + str(self.check()))
+        print("Check LZP3: " + str(self.check()))
 
         self.motType = base_config['motType']
         self.MStep = base_config['MStep']
@@ -48,6 +48,10 @@ class LZP3:
         # 角度脉冲数，和细分、步进角、转动比有关
         self.angle_step = int((360 / self.motType * self.MStep * self.driveRatio) / 360)
 
+    def init_without_adc(self):
+        print("设置当前位置为零点 " + str(self.set_zero()) + ", now: " + str(self.get_p()))
+
+        print("设置定位运动模式 " + str(self.set_mode_p()))
 
     def init(self, acc=1, dec=1, v=1):
         print("设置当前位置为零点 " + str(self.set_zero()) + ", now: " + str(self.get_p()))
@@ -76,23 +80,27 @@ class LZP3:
         '''
         cmd = "P_ACC_DEC_V " + str(self.obj)
         if self.safe['acc'] > acc > 0:
-            cmd += " " + str(acc * self.angle_step)
+            cmd += " " + str(int(acc * self.angle_step))
         else:
             return "[ERROR] acc illegal"
 
         if self.safe['dec'] > dec > 0:
-            cmd += " " + str(dec * self.angle_step)
+            cmd += " " + str(int(dec * self.angle_step))
         else:
             return "[ERROR] dec illegal"
 
         if self.safe['v'] > v > 0:
-            cmd += " " + str(v * self.angle_step)
+            cmd += " " + str(int(v * self.angle_step))
         else:
             return "[ERROR] v illegal"
 
         self._send(cmd)
 
-        return self._wait_receive()
+        res = self._wait_receive()
+
+        print(cmd, res)
+
+        return res
 
     def p_rel(self, angle):
         '''
@@ -240,7 +248,7 @@ class LZP3:
 
 if __name__ == '__main__':
     # 转盘连接测试
-    config = Config()
+    config = StepConfig()
     haha = LZP3(config.getArgs())
 
     # 打印初始位置

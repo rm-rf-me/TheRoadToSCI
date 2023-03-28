@@ -19,11 +19,10 @@ def io_set_tx(args):
     freq = args.freq
     power = args.power
 
-    qq = input("Config文件中配置当前频率为%fGHz，当前功率为%fdBm，若正确请敲回车，若不正确请输n：" % (
+    qq = input("Config文件中配置当前频率为%sGHz，当前功率为%sdBm，若正确请敲回车，若不正确请输n：" % (
         args.freq, args.power))
     if qq == 'n' or qq == 'N':
-        freq = input("当前使用的频率是：")
-        power = input("当前使用的功率是：")
+        freq, power = input("设置当前的频率和功率，只写数字，默认单位为GHz和dBm，空格隔开：").split()
     else:
         freq = args.freq
         power = args.power

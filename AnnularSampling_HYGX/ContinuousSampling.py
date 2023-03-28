@@ -1,5 +1,5 @@
 from ContinuousConfig import ContinuousConfig
-from util.cmdIO import *
+from utils.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
 
 import time
@@ -11,7 +11,7 @@ mpl.use('TkAgg')
 
 class ContinuousSampling(SampleBase):
     def __init__(self, args):
-        super().__init__()
+        super().__init__(args)
 
     def _use_config_dict(self, args):
         '''
@@ -87,14 +87,17 @@ class ContinuousSampling(SampleBase):
             return
 
         v = (abs(dec_angle) - abs(acc_angle)) / tot_time
-        acc = 2 * abs(acc_angle) / v
-        dec = 2 * (abs(stop_angle) - abs(dec_angle)) / v
+        acc = v / (2 * abs(acc_angle) / v)
+        dec_len = abs(stop_angle) - abs(dec_angle)
+        dec = v / (2 * dec_len / v)
+        print("adv: %f %f %f" % (acc, dec, v))
         if acc > self.pan.safe['acc'] or dec > self.pan.safe['dec'] or v > self.pan.safe['v']:
             print("adv not safe")
             return
 
+
         note2 = io_get_note(self.args)
-        note1 = "freq:%f power:%f acc_angle:%f dec_angle:%f stop_angle:%f tot_time:%f sampling_gap:%f acc:%f dec:%f v:%f" % (
+        note1 = "freq:%s power:%s acc_angle:%f dec_angle:%f stop_angle:%f tot_time:%f sampling_gap:%f acc:%f dec:%f v:%f" % (
             self.freq,
             self.power,
             acc_angle,
@@ -108,6 +111,7 @@ class ContinuousSampling(SampleBase):
         )
         data = {
             'time': [],
+            'use_time': [],
             'angle': [],
             'v': [],
             'value': [],
@@ -117,6 +121,7 @@ class ContinuousSampling(SampleBase):
 
         self.pan.set_acc_dec_v(acc, dec, v)
         self.pan.p_rel(stop_angle)
+        start_time = time.time()
 
         pos = -1
         tmp = -2
@@ -128,12 +133,13 @@ class ContinuousSampling(SampleBase):
 
             val = self.rx.getPower()
             angle = abs(self.pan.get_p())
-            vv = self.pan.get_v()
+            vv = abs(self.pan.get_v())
             now = time.time()
 
             print(now, angle, vv, val)
 
             data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
+            data['use_time'].append(now - start_time)
             data['angle'].append(angle)
             data['v'].append(vv)
             data['value'].append(float(val))
@@ -142,9 +148,9 @@ class ContinuousSampling(SampleBase):
             time.sleep(sampling_gap)
 
         if show_pic or save_pic:
-            self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
+            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
 
-        self.save_file(data, save_pic, data_type, save_name)
+        self.save_file(data, fig, save_pic, data_type, save_name)
 
         return data
 

@@ -1,5 +1,5 @@
 from StepConfig import StepConfig
-from util.cmdIO import *
+from utils.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
 
 import time
@@ -11,7 +11,11 @@ mpl.use('TkAgg')
 
 class StepSampling(SampleBase):
     def __init__(self, args):
-        super().__init__()
+        super().__init__(args)
+
+        acc, dec, v = io_set_adv(self.args)
+
+        self.init_pan(float(acc), float(dec), float(v))
 
 
     def _use_config_dict(self, args):
@@ -150,9 +154,9 @@ class StepSampling(SampleBase):
 
 
         if show_pic or save_pic:
-            self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
+            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
 
-        self.save_file(data, save_pic, data_type)
+        self.save_file(data, fig, save_pic, data_type)
 
 
         return data

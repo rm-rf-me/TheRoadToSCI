@@ -1,12 +1,12 @@
 import pyvisa as visa
-from AnnularSampling_HYGX.StepConfig import Config
+from AnnularSampling_HYGX.StepConfig import StepConfig
 
 class Rx2438:
     def __init__(self, args):
         self.args = args
         rm = visa.ResourceManager()
-        res = rm.list_resources()
-        print('find resources: ', res)
+        # res = rm.list_resources()
+        # print('find resources: ', res)
         self.haha = rm.open_resource(args.rxPath, read_termination='\n')
         print("Rx连接成功: " + str(self.haha))
         # self.setFreq(self.args.freq)
@@ -19,6 +19,7 @@ class Rx2438:
         :param freq:
         :return:
         '''
+        print("rx set freq: %sGHz" % freq)
         return self._write('FREQ ' + freq + 'GHz\n')
 
     def getPower(self):
@@ -36,7 +37,7 @@ class Rx2438:
 
 
 if __name__ == '__main__':
-    config = Config()
+    config = StepConfig()
     args = config.getArgs()
     rx = Rx2438(args)
     print(rx.getPower())
