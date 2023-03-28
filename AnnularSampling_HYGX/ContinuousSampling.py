@@ -1,4 +1,4 @@
-from config import Config
+from ContinuousConfig import ContinuousConfig
 from util.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
 
@@ -13,7 +13,6 @@ class ContinuousSampling(SampleBase):
     def __init__(self, args):
         super().__init__()
 
-
     def _use_config_dict(self, args):
         '''
         用于保证调用参数优先于配置文件参数
@@ -25,14 +24,12 @@ class ContinuousSampling(SampleBase):
         :param save_pic:
         :return:
         '''
-        if args['max_angle'] is None:
-            args['max_angle'] = self.args.max_angle
-        if args['delay'] is None:
-            args['delay'] = self.args.delay
-        if args['stride'] is None:
-            args['stride'] = self.args.stride
-        if args['step_block'] is None:
-            args['step_block'] = self.args.step_block
+        if args['acc_angle'] is None:
+            args['acc_angle'] = self.args.acc_angle
+        if args['dec_angle'] is None:
+            args['dec_angle'] = self.args.dec_angle
+        if args['stop_angle'] is None:
+            args['stop_angle'] = self.args.stop_angle
         if args['show_pic'] is None:
             args['show_pic'] = self.args.show_pic
         if args['save_pic'] is None:
@@ -42,7 +39,7 @@ class ContinuousSampling(SampleBase):
 
         return args
 
-    def _use_config(self, max_angle, delay, stride, step_block, show_pic, save_pic, data_type):
+    def _use_config(self, acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name):
         '''
         用于保证调用参数优先于配置文件参数
         :param max_angle:
@@ -53,141 +50,130 @@ class ContinuousSampling(SampleBase):
         :param save_pic:
         :return:
         '''
-        if max_angle is None:
-            max_angle = self.args.max_angle
-        if delay is None:
-            delay = self.args.delay
-        if stride is None:
-            stride = self.args.stride
-        if step_block is None:
-            step_block = self.args.step_block
+        if acc_angle is None:
+            acc_angle = self.args.acc_angle
+        if dec_angle is None:
+            dec_angle = self.args.dec_angle
+        if stop_angle is None:
+            stop_angle = self.args.stop_angle
         if show_pic is None:
             show_pic = self.args.show_pic
         if save_pic is None:
             save_pic = self.args.save_pic
         if data_type is None:
             data_type = self.args.data_type
+        if tot_time is None:
+            tot_time = self.args.tot_time
+        if sampling_gap is None:
+            sampling_gap = self.args.sampling_gap
+        if save_name is None:
+            save_name = self.args.save_name
 
-        return max_angle, delay, stride, step_block, show_pic, save_pic, data_type
+        return acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name
 
-    # angle正数为顺时针，负数为逆时针
-    def get_series_step_rel(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None,
-                            save_pic=None, data_type=None):
-        '''
-        一步一停测得一组数据
+    def get_series_continuous_rel(self, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
+                                  sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
+        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
+            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
 
-        :param end_a: 最终停止的角度，正数为顺时针，负数为逆时针
-        :param delay: 电机每步停止后的休眠时间，用于功率计测量
-        :param stride: 步长，以度为单位
-        :param block: 每步后是否输入阻塞（暂时废弃）
-        :param show: 序列之后是否展示
-        :return:
-        '''
 
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
-                                                                                               step_block, show_pic,
-                                                                                               save_pic, data_type)
+        neg = 0
+        if acc_angle < 0 and dec_angle < 0 and stop_angle < 0:
+            neg = 1
+        elif acc_angle > 0 and dec_angle > 0 and stop_angle > 0:
+            neg = 0
+        else:
+            print("angle error")
+            return
 
-        note = io_get_note(self.args)
+        v = (abs(dec_angle) - abs(acc_angle)) / tot_time
+        acc = 2 * abs(acc_angle) / v
+        dec = 2 * (abs(stop_angle) - abs(dec_angle)) / v
+        if acc > self.pan.safe['acc'] or dec > self.pan.safe['dec'] or v > self.pan.safe['v']:
+            print("adv not safe")
+            return
+
+        note2 = io_get_note(self.args)
+        note1 = "freq:%f power:%f acc_angle:%f dec_angle:%f stop_angle:%f tot_time:%f sampling_gap:%f acc:%f dec:%f v:%f" % (
+            self.freq,
+            self.power,
+            acc_angle,
+            dec_angle,
+            stop_angle,
+            tot_time,
+            sampling_gap,
+            acc,
+            dec,
+            v
+        )
         data = {
             'time': [],
             'angle': [],
+            'v': [],
             'value': [],
-            note: []
+            note1: [],
+            note2: []
         }
 
-        neg = 0
-        if max_angle < 0:
-            neg = 1
+        self.pan.set_acc_dec_v(acc, dec, v)
+        self.pan.p_rel(stop_angle)
 
+        pos = -1
+        tmp = -2
         while 1:
-            if self.debugPan:
-                val = random.random()
-            else:
-                val = self.rx.getPower()
+            if tmp == pos:
+                break
+            tmp = pos
+            pos = self.pan.get_p()
 
+            val = self.rx.getPower()
+            angle = abs(self.pan.get_p())
+            vv = self.pan.get_v()
             now = time.time()
-            angle = self.pan.get_p()
-            if angle < 0:
-                angle = -angle
-            print(now, angle, val)
 
-            io_block(self.args, step_block)
+            print(now, angle, vv, val)
 
             data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
             data['angle'].append(angle)
+            data['v'].append(vv)
             data['value'].append(float(val))
-            data[note].append(' ')
-
-            # 旋转到目标角跳出循环
-            if (neg and max_angle >= 0) or (not neg and max_angle <= 0):
-                break
-
-            # 调用接口类旋转函数
-            if neg:
-                self.pan.p_rel(-stride)
-            else:
-                self.pan.p_rel(stride)
-
-            pos = -1
-            tmp = -2
-            # 通过轮询确定停止位置
-            while 1:
-                if tmp == pos:
-                    break
-                tmp = pos
-                pos = self.pan.get_p()
-
-                time.sleep(0.1)
-
-            time.sleep(delay)
-
-            if neg:
-                max_angle += stride
-            else:
-                max_angle -= stride
-
-
+            data[note1].append(' ')
+            data[note2].append(' ')
+            time.sleep(sampling_gap)
 
         if show_pic or save_pic:
             self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
 
-        self.save_file(data, save_pic, data_type)
-
+        self.save_file(data, save_pic, data_type, save_name)
 
         return data
 
-    def get_series_continuous_rel(self,acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None, sampling_gap=None, ):
-        pass
+    def goback_continuous(self, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
+                          sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
+        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
+            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
 
-    def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None,
-                    data_type=None):
-        '''
-        往返采样函数，是get_series_step_rel的简单封装，一次往返后回到原点，参数与get_series_step_rel保持一致
+        self.get_series_continuous_rel(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic,
+                                       data_type, save_name)
+        self.get_series_continuous_rel(-acc_angle, -dec_angle, -stop_angle, tot_time, sampling_gap, show_pic, save_pic,
+                                       data_type, save_name)
 
+    def goback_goback_continuous_batch(self, speeds, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
+                                       sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
+        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
+            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+        self.args.cmd = False
+        for i in speeds:
+            save_name += "_T" + str(i)
+            self.goback_continuous(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
 
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :param data_type:
-        :return:
-        '''
-
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
-                                                                                               step_block, show_pic,
-                                                                                               save_pic, data_type)
-
-        self.get_series_step_rel(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
-        self.get_series_step_rel(-max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
-
+def get_batch(sampling):
+    from script.get_lstm_data import get_lstm_all_surface_data
+    get_lstm_all_surface_data(sampling)
 
 if __name__ == '__main__':
-    config = Config()
+    config = ContinuousConfig()
     args = config.getArgs()
     haha = ContinuousSampling(args)
-    # haha.init_pan()
 
-    haha.goback_step()
+    haha.goback_continuous()

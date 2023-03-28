@@ -1,4 +1,4 @@
-from config import Config
+from StepConfig import StepConfig
 from util.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
 
@@ -183,9 +183,8 @@ class StepSampling(SampleBase):
 
 
 if __name__ == '__main__':
-    config = Config()
+    config = StepConfig()
     args = config.getArgs()
     haha = StepSampling(args)
-    # haha.init_pan()
 
     haha.goback_step()

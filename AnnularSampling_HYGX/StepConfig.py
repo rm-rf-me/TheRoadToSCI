@@ -1,13 +1,12 @@
 import argparse
+from util.base_config import BaseConfig
 
-from AnnularSampling_HYGX.util.base_config import BaseConfig
-
-class Config(BaseConfig):
+class StepConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
         # 当前使用的频率，字符串形式，用于记录
-        self.parser.add_argument('--freq', type=str, default="None")
+        self.parser.add_argument('--freq', type=float, default=0)
 
         # 当前使用的功率，浮点数形式，用于记录，单位为dbm
         self.parser.add_argument('--power', type=float, default=0)
@@ -47,7 +46,5 @@ class Config(BaseConfig):
 
 
         self.args = self.parser.parse_args()
-
-
 
 

@@ -1,5 +1,5 @@
 import pyvisa as visa
-from AnnularSampling_HYGX.config import Config
+from AnnularSampling_HYGX.StepConfig import Config
 
 class Rx2438:
     def __init__(self, args):
@@ -19,7 +19,7 @@ class Rx2438:
         :param freq:
         :return:
         '''
-        return self._write('FREQ ' + freq + '\n')
+        return self._write('FREQ ' + freq + 'GHz\n')
 
     def getPower(self):
         '''

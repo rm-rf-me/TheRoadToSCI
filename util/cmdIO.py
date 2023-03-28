@@ -8,25 +8,25 @@ def io_set_adv(args):
     a = args.acc
     d = args.dec
     v = args.v
-    if args.cmd is True:
-        qq = input("Config文件中当前电机参数adv为：%f %f %f，若正确请敲回车，若不正确请输入n：" % (a, d, v))
-        if qq == 'n' or qq == 'N':
-            return input("输入电机参数acc dev v，中间用空格隔开：").split()
+
+    qq = input("Config文件中当前电机参数adv为：%f %f %f，若正确请敲回车，若不正确请输入n：" % (a, d, v))
+    if qq == 'n' or qq == 'N':
+        return input("输入电机参数acc dev v，中间用空格隔开：").split()
 
     return a, d, v
 
 def io_set_tx(args):
     freq = args.freq
     power = args.power
-    if args.cmd is True:
-        qq = input("Config文件中配置当前频率为%s，当前功率为%f，若正确请敲回车，若不正确请输n：" % (
-            args.freq, args.power))
-        if qq == 'n' or qq == 'N':
-            freq = input("当前使用的频率是：")
-            power = input("当前使用的功率是：")
-        else:
-            freq = args.freq
-            power = args.power
+
+    qq = input("Config文件中配置当前频率为%fGHz，当前功率为%fdBm，若正确请敲回车，若不正确请输n：" % (
+        args.freq, args.power))
+    if qq == 'n' or qq == 'N':
+        freq = input("当前使用的频率是：")
+        power = input("当前使用的功率是：")
+    else:
+        freq = args.freq
+        power = args.power
 
     return freq, power
 

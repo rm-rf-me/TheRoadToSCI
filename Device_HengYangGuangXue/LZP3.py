@@ -2,7 +2,7 @@ import serial
 import time
 import eventlet
 
-from AnnularSampling_HYGX.config import Config
+from AnnularSampling_HYGX.StepConfig import Config
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；
@@ -146,6 +146,11 @@ class LZP3:
         :return:
         '''
         cmd = "GET_P " + str(self.obj)
+        self._send(cmd)
+        return int(self._wait_receive()) / self.angle_step
+
+    def get_v(self):
+        cmd = "GET_V " + str(self.obj)
         self._send(cmd)
         return int(self._wait_receive()) / self.angle_step
 

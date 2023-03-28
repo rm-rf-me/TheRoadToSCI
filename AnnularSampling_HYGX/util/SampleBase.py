@@ -26,6 +26,8 @@ class SampleBase():
         self.init_pan(float(acc), float(dec), float(v))
 
         self.freq, self.power = io_set_tx(self.args)
+        self.rx.setFreq(self.freq)
+        print("Rx2438 freq :", self.args.freq)
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan.init(acc, dec, v)
@@ -44,12 +46,14 @@ class SampleBase():
         return
 
     def get_file_name(self, path):
-        name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
+        # name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
+        name = './data/' + str(time.time()).split('.')[0] + path
         return name
 
-    def save_file(self, data, save_pic, data_type):
+    def save_file(self, data, save_pic, data_type, path=None):
         # 数据保存
-        path = io_get_file_name(self.args)
+        if path is None:
+            path = io_get_file_name(self.args)
         if path != 'n' or path != 'N':
             # 默认路径为XXXSampling_/data/，命名格式为 时间戳-频率-功率-命令.对应格式
             name = self.get_file_name(path)
