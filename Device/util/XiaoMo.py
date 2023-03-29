@@ -1,49 +1,32 @@
 import serial
 import time
-import eventlet
 
-from AnnularSampling_HYGX.StepConfig import StepConfig
-
-# 电机转盘基础参数设置
-#   MStep为细分数，与电机驱动板有关；
-#   DriveRatio为转动比，与转盘机械结构有关；
-#   motType为步进角，与电机种类有关；
-#   obj为当前电机在控制板中的编号，与控制板接线有关
-base_config = {
-    "MStep": 20,
-    "DriveRatio": 180,
+xiaomo_config = {
     "Baud": 115200,
     "Timeout": None,
-    "motType": 1.8,
-    "obj": 0,
-    "safe": {
-        "acc": 10,
-        "dec": 10,
-        "v": 10
-    }
 }
 
 
-class LZP3:
-    def __init__(self, args):
+class XiaoMo:
+    def __init__(self, args, motor_config):
         '''
         LZP3控制接口，遵循rx323串口协议，控制命令遵循小墨科技MT22控制板命令
         :param args:
         '''
         # self.port = serial.tools.list_ports.comports()[args.port].device
         self.port = args.port
-        self.baud = base_config['Baud']
-        self.timeout = base_config['Timeout']
-        self.obj = base_config['obj']
-        self.safe = base_config['safe']
+        self.baud = xiaomo_config['Baud']
+        self.timeout = xiaomo_config['Timeout']
+        self.obj = motor_config['obj']
+        self.safe = motor_config['safe']
 
         self.comm = serial.Serial(self.port, baudrate=self.baud, timeout=self.timeout)
-        time.sleep(1)       # wait serial
+        time.sleep(1)  # wait serial
         print("Check LZP3: " + str(self.check()))
 
-        self.motType = base_config['motType']
-        self.MStep = base_config['MStep']
-        self.driveRatio = base_config['DriveRatio']
+        self.motType = motor_config['motType']
+        self.MStep = motor_config['MStep']
+        self.driveRatio = motor_config['DriveRatio']
 
         # 角度脉冲数，和细分、步进角、转动比有关
         self.angle_step = int((360 / self.motType * self.MStep * self.driveRatio) / 360)
@@ -58,7 +41,8 @@ class LZP3:
 
         print("设置定位运动模式 " + str(self.set_mode_p()))
 
-        print("当前电机acc dec v " + str(acc) + ", " + str(dec) + ", " + str(v) + ", " + str(self.set_acc_dec_v(acc, dec, v)))
+        print(
+            "当前电机acc dec v " + str(acc) + ", " + str(dec) + ", " + str(v) + ", " + str(self.set_acc_dec_v(acc, dec, v)))
 
     def set_mode_p(self):
         '''
@@ -70,7 +54,7 @@ class LZP3:
 
         return self._wait_receive()
 
-    def set_acc_dec_v(self, acc=1.0, dec=1.0, v=1.0):
+    def set_acc_dec_v(self, acc, dec, v):
         '''
         设置三个参数
         :param acc:
@@ -180,17 +164,17 @@ class LZP3:
         '''
         return self.comm.readline()[:-2]
 
-    def _event_receive(self):
-        '''
-        超时等待，暂时废弃
-        :return:
-        '''
-        eventlet.monkey_patch()
-
-        with eventlet.Timeout(5, False):
-            res = self._wait_receive()
-            return str(res)
-        return 0
+    # def _event_receive(self):
+    #     '''
+    #     超时等待，暂时废弃
+    #     :return:
+    #     '''
+    #     eventlet.monkey_patch()
+    #
+    #     with eventlet.Timeout(5, False):
+    #         res = self._wait_receive()
+    #         return str(res)
+    #     return 0
 
     def _wait_receive(self):
         '''
@@ -209,7 +193,6 @@ class LZP3:
         '''
         self.comm.close()
         print(self.comm.name + " closed.")
-
 
     def _isAvailable(self):
         '''
@@ -242,21 +225,3 @@ class LZP3:
             else:
                 print("open failed")
                 return False
-
-
-
-
-if __name__ == '__main__':
-    # 转盘连接测试
-    config = StepConfig()
-    haha = LZP3(config.getArgs())
-
-    # 打印初始位置
-    print("start: " + str(haha.get_p()))
-
-    # 旋转1度
-    haha.p_rel(1)
-    time.sleep(2)
-
-    # 打印结束位置
-    print("end: " + str(haha.get_p()))

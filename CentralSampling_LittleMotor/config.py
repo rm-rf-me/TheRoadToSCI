@@ -1,5 +1,6 @@
 import argparse
 
+
 class Config:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='')
@@ -26,11 +27,7 @@ class Config:
         self.parser.add_argument('--default_speed', type=int, default=500)
         self.parser.add_argument('--default_dir', type=str, default='CCW')
 
-
         self.args = self.parser.parse_args()
 
     def getArgs(self):
         return self.args
-
-
-

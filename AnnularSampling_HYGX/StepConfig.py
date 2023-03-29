@@ -1,6 +1,7 @@
 import argparse
 from utils.base_config import BaseConfig
 
+
 class StepConfig(BaseConfig):
     def __init__(self):
         super().__init__()
@@ -44,7 +45,4 @@ class StepConfig(BaseConfig):
         # 是否为命令行执行模式
         self.parser.add_argument('--cmd', type=bool, default=True)
 
-
         self.args = self.parser.parse_args()
-
-

@@ -1,5 +1,6 @@
 import argparse
 
+
 class BaseConfig:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='')

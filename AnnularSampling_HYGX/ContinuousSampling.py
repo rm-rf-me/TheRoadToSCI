@@ -13,98 +13,42 @@ class ContinuousSampling(SampleBase):
     def __init__(self, args):
         super().__init__(args)
 
-    def _use_config_dict(self, args):
-        '''
-        用于保证调用参数优先于配置文件参数
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :return:
-        '''
-        if args['acc_angle'] is None:
-            args['acc_angle'] = self.args.acc_angle
-        if args['dec_angle'] is None:
-            args['dec_angle'] = self.args.dec_angle
-        if args['stop_angle'] is None:
-            args['stop_angle'] = self.args.stop_angle
-        if args['show_pic'] is None:
-            args['show_pic'] = self.args.show_pic
-        if args['save_pic'] is None:
-            args['save_pic'] = self.args.save_pic
-        if args['data_type'] is None:
-            args['data_type'] = self.args.data_type
+        self.check_name = ['acc_angle', 'dec_angle', 'stop_angle', 'tot_time', 'sampling_gap', 'show_pic', 'save_pic',
+                           'data_type', 'save_name']
 
-        return args
+    def get_series_continuous_rel(self, cmd_args):
+        if cmd_args is None:
+            cmd_args = {}
 
-    def _use_config(self, acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name):
-        '''
-        用于保证调用参数优先于配置文件参数
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :return:
-        '''
-        if acc_angle is None:
-            acc_angle = self.args.acc_angle
-        if dec_angle is None:
-            dec_angle = self.args.dec_angle
-        if stop_angle is None:
-            stop_angle = self.args.stop_angle
-        if show_pic is None:
-            show_pic = self.args.show_pic
-        if save_pic is None:
-            save_pic = self.args.save_pic
-        if data_type is None:
-            data_type = self.args.data_type
-        if tot_time is None:
-            tot_time = self.args.tot_time
-        if sampling_gap is None:
-            sampling_gap = self.args.sampling_gap
-        if save_name is None:
-            save_name = self.args.save_name
-
-        return acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name
-
-    def get_series_continuous_rel(self, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
-                                  sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
-        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
-            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
-
+        cmd_args = self._use_config_dict(cmd_args, self.check_name)
 
         neg = 0
-        if acc_angle < 0 and dec_angle < 0 and stop_angle < 0:
+        if cmd_args['acc_angle'] < 0 and cmd_args['dec_angle'] < 0 and cmd_args['stop_angle'] < 0:
             neg = 1
-        elif acc_angle > 0 and dec_angle > 0 and stop_angle > 0:
+        elif cmd_args['acc_angle'] > 0 and cmd_args['dec_angle'] > 0 and cmd_args['stop_angle'] > 0:
             neg = 0
         else:
             print("angle error")
             return
 
-        v = (abs(dec_angle) - abs(acc_angle)) / tot_time
-        acc = v / (2 * abs(acc_angle) / v)
-        dec_len = abs(stop_angle) - abs(dec_angle)
+        v = (abs(cmd_args['dec_angle']) - abs(cmd_args['acc_angle'])) / cmd_args['tot_time']
+        acc = v / (2 * abs(cmd_args['acc_angle']) / v)
+        dec_len = abs(cmd_args['stop_angle']) - abs(cmd_args['dec_angle'])
         dec = v / (2 * dec_len / v)
         print("adv: %f %f %f" % (acc, dec, v))
         if acc > self.pan.safe['acc'] or dec > self.pan.safe['dec'] or v > self.pan.safe['v']:
             print("adv not safe")
             return
 
-
         note2 = io_get_note(self.args)
         note1 = "freq:%s power:%s acc_angle:%f dec_angle:%f stop_angle:%f tot_time:%f sampling_gap:%f acc:%f dec:%f v:%f" % (
             self.freq,
             self.power,
-            acc_angle,
-            dec_angle,
-            stop_angle,
-            tot_time,
-            sampling_gap,
+            cmd_args['acc_angle'],
+            cmd_args['dec_angle'],
+            cmd_args['stop_angle'],
+            cmd_args['tot_time'],
+            cmd_args['sampling_gap'],
             acc,
             dec,
             v
@@ -120,7 +64,7 @@ class ContinuousSampling(SampleBase):
         }
 
         self.pan.set_acc_dec_v(acc, dec, v)
-        self.pan.p_rel(stop_angle)
+        self.pan.p_rel(cmd_args['stop_angle'])
         start_time = time.time()
 
         pos = -1
@@ -145,37 +89,39 @@ class ContinuousSampling(SampleBase):
             data['value'].append(float(val))
             data[note1].append(' ')
             data[note2].append(' ')
-            time.sleep(sampling_gap)
+            time.sleep(cmd_args['sampling_gap'])
 
-        if show_pic or save_pic:
-            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
+        if cmd_args['show_pic'] or cmd_args['save_pic']:
+            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm',
+                                show_pic=cmd_args['show_pic'])
 
-        self.save_file(data, fig, save_pic, data_type, save_name)
+        self.save_file(data, fig, cmd_args['save_pic'], cmd_args['data_type'], cmd_args['save_name'])
 
         return data
 
-    def goback_continuous(self, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
-                          sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
-        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
-            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+    def goback_continuous(self, cmd_args):
+        if cmd_args is None:
+            cmd_args = {}
 
-        self.get_series_continuous_rel(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic,
-                                       data_type, save_name)
-        self.get_series_continuous_rel(-acc_angle, -dec_angle, -stop_angle, tot_time, sampling_gap, show_pic, save_pic,
-                                       data_type, save_name)
+        cmd_args = self._use_config_dict(cmd_args, self.check_name)
 
-    def goback_goback_continuous_batch(self, speeds, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
-                                       sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
-        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
-            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+        self.get_series_continuous_rel(cmd_args)
+        self.get_series_continuous_rel(cmd_args)
+
+    def goback_goback_continuous_batch(self, cmd_args=None):
+        if cmd_args is None:
+            cmd_args = {}
+        cmd_args = self._use_config_dict(cmd_args, self.check_name)
         self.args.cmd = False
-        for i in speeds:
-            save_name += "_T" + str(i)
-            self.goback_continuous(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+        for i in cmd_args['speeds']:
+            cmd_args['save_name'] += "_T" + str(i)
+            self.goback_continuous(cmd_args)
+
 
 def get_batch(sampling):
     from script.get_lstm_data import get_lstm_all_surface_data
     get_lstm_all_surface_data(sampling)
+
 
 if __name__ == '__main__':
     config = ContinuousConfig()

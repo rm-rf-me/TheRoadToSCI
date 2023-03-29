@@ -52,8 +52,4 @@ class ContinuousConfig(BaseConfig):
         # 保存文件名
         self.parser.add_argument('--save_name', type=str, default=None)
 
-
         self.args = self.parser.parse_args()
-
-
-

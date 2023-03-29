@@ -17,66 +17,10 @@ class StepSampling(SampleBase):
 
         self.init_pan(float(acc), float(dec), float(v))
 
-
-    def _use_config_dict(self, args):
-        '''
-        用于保证调用参数优先于配置文件参数
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :return:
-        '''
-        if args['max_angle'] is None:
-            args['max_angle'] = self.args.max_angle
-        if args['delay'] is None:
-            args['delay'] = self.args.delay
-        if args['stride'] is None:
-            args['stride'] = self.args.stride
-        if args['step_block'] is None:
-            args['step_block'] = self.args.step_block
-        if args['show_pic'] is None:
-            args['show_pic'] = self.args.show_pic
-        if args['save_pic'] is None:
-            args['save_pic'] = self.args.save_pic
-        if args['data_type'] is None:
-            args['data_type'] = self.args.data_type
-
-        return args
-
-    def _use_config(self, max_angle, delay, stride, step_block, show_pic, save_pic, data_type):
-        '''
-        用于保证调用参数优先于配置文件参数
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :return:
-        '''
-        if max_angle is None:
-            max_angle = self.args.max_angle
-        if delay is None:
-            delay = self.args.delay
-        if stride is None:
-            stride = self.args.stride
-        if step_block is None:
-            step_block = self.args.step_block
-        if show_pic is None:
-            show_pic = self.args.show_pic
-        if save_pic is None:
-            save_pic = self.args.save_pic
-        if data_type is None:
-            data_type = self.args.data_type
-
-        return max_angle, delay, stride, step_block, show_pic, save_pic, data_type
+        self.check_name = ['max_angle', 'delay', 'stride', 'step_block', 'show_pic', 'save_pic', 'data_type']
 
     # angle正数为顺时针，负数为逆时针
-    def get_series_step_rel(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None,
-                            save_pic=None, data_type=None):
+    def get_series_step_rel(self, cmd_args=None):
         '''
         一步一停测得一组数据
 
@@ -88,9 +32,10 @@ class StepSampling(SampleBase):
         :return:
         '''
 
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
-                                                                                               step_block, show_pic,
-                                                                                               save_pic, data_type)
+        if cmd_args is None:
+            cmd_args = {}
+
+        cmd_args = self._use_config_dict(cmd_args, self.check_name)
 
         note = io_get_note(self.args)
         data = {
@@ -101,7 +46,7 @@ class StepSampling(SampleBase):
         }
 
         neg = 0
-        if max_angle < 0:
+        if cmd_args['max_angle'] < 0:
             neg = 1
 
         while 1:
@@ -116,7 +61,7 @@ class StepSampling(SampleBase):
                 angle = -angle
             print(now, angle, val)
 
-            io_block(self.args, step_block)
+            io_block(self.args, cmd_args['step_block'])
 
             data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
             data['angle'].append(angle)
@@ -124,14 +69,14 @@ class StepSampling(SampleBase):
             data[note].append(' ')
 
             # 旋转到目标角跳出循环
-            if (neg and max_angle >= 0) or (not neg and max_angle <= 0):
+            if (neg and cmd_args['max_angle'] >= 0) or (not neg and cmd_args['max_angle'] <= 0):
                 break
 
             # 调用接口类旋转函数
             if neg:
-                self.pan.p_rel(-stride)
+                self.pan.p_rel(-cmd_args['stride'])
             else:
-                self.pan.p_rel(stride)
+                self.pan.p_rel(cmd_args['stride'])
 
             pos = -1
             tmp = -2
@@ -144,46 +89,36 @@ class StepSampling(SampleBase):
 
                 time.sleep(0.1)
 
-            time.sleep(delay)
+            time.sleep(cmd_args['delay'])
 
             if neg:
-                max_angle += stride
+                cmd_args['max_angle'] += cmd_args['stride']
             else:
-                max_angle -= stride
+                cmd_args['max_angle'] -= cmd_args['stride']
 
+        if cmd_args['show_pic'] or cmd_args['save_pic']:
+            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm',
+                                show_pic=cmd_args['show_pic'])
 
-
-        if show_pic or save_pic:
-            fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
-
-        self.save_file(data, fig, save_pic, data_type)
-
+        self.save_file(data, fig, cmd_args['save_pic'], cmd_args['data_type'])
 
         return data
 
-
-    def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None,
-                    data_type=None):
+    def goback_step(self, cmd_args=None):
         '''
         往返采样函数，是get_series_step_rel的简单封装，一次往返后回到原点，参数与get_series_step_rel保持一致
 
-
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
-        :param data_type:
+        :param args:
         :return:
         '''
 
-        max_angle, delay, stride, step_block, show_pic, save_pic, data_type = self._use_config(max_angle, delay, stride,
-                                                                                               step_block, show_pic,
-                                                                                               save_pic, data_type)
+        if cmd_args is None:
+            cmd_args = {}
 
-        self.get_series_step_rel(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
-        self.get_series_step_rel(-max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
+        cmd_args = self._use_config_dict(cmd_args, self.check_name)
+
+        self.get_series_step_rel(cmd_args)
+        self.get_series_step_rel(cmd_args)
 
 
 if __name__ == '__main__':

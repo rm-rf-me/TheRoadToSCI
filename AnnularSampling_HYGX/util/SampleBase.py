@@ -1,5 +1,5 @@
-from Device_HengYangGuangXue.LZP3 import LZP3
-from Device_Ceyear.RX2438 import Rx2438
+from Device.Device_HengYangGuangXue import LZP3
+from Device.Device_Ceyear.RX2438 import Rx2438
 from utils.cmdIO import *
 
 import matplotlib.pyplot as plt
@@ -29,8 +29,23 @@ class SampleBase():
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan.init(acc, dec, v)
 
-    def _use_config_dict(self, args):
-        pass
+    def _use_config_dict(self, cmd_args, check_args):
+        '''
+        用于保证调用参数优先于配置文件参数
+        :param max_angle:
+        :param delay:
+        :param stride:
+        :param step_block:
+        :param show_pic:
+        :param save_pic:
+        :return:
+        '''
+
+        for i in check_args:
+            if cmd_args[i] is None:
+                cmd_args[i] = self.args.__dict__(i)
+
+        return cmd_args
 
     def show_pic(self, x, y, xlabel='angle', ylabel='dBm', show_pic=True):
         # plt.clf()
@@ -72,9 +87,3 @@ class SampleBase():
                     break
                 else:
                     data_type = input("文件格式有问题，仅限于txt,xlsx,csv，请重新选择: ")
-
-
-
-
-
-

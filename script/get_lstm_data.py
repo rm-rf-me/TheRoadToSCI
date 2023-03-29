@@ -1,4 +1,3 @@
-
 def get_lstm_one_surface_data(sampling, surface_name, repid_times=12):
     speeds = [10, 20, 30]
     for i in range(repid_times):
@@ -15,6 +14,4 @@ def get_lstm_all_surface_data(sampling):
     for i in range(8):
         input("请放置No%d表面: " % i)
 
-        get_lstm_one_surface_data(sampling, "NO%dSurface"%i)
-
-
+        get_lstm_one_surface_data(sampling, "NO%dSurface" % i)
