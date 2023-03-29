@@ -1,15 +1,15 @@
 from ContinuousConfig import ContinuousConfig
 from utils.sampling.xiaomo_sampling import ContinuousSamplingBase
-from utils.sampling.base_sampling import Sample200PanBase
+from utils.sampling.base_sampling import Sample300PanBase
 
 import matplotlib as mpl
 
 mpl.use('TkAgg')
 
 
-class Continuous200Sampling(ContinuousSamplingBase, Sample200PanBase):
+class Continuous300Sampling(ContinuousSamplingBase, Sample300PanBase):
     def __init__(self, args):
-        super(Continuous200Sampling, self).__init__(args)
+        super(Continuous300Sampling, self).__init__(args)
 
 
 def get_batch(sampling):
@@ -20,6 +20,6 @@ def get_batch(sampling):
 if __name__ == '__main__':
     config = ContinuousConfig()
     args = config.getArgs()
-    haha = Continuous200Sampling(args)
+    haha = Continuous300Sampling(args)
 
     haha.goback_continuous()

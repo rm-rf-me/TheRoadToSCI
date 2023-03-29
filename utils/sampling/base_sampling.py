@@ -1,4 +1,5 @@
-from Device.Device_HengYangGuangXue import LZP3
+from Device.Device_ShenZhenHengYu.HY300mm import HY300mm
+from Device.Device_HengYangGuangXue.LZP3 import LZP3
 from Device.Device_Ceyear.RX2438 import Rx2438
 from utils.cmdIO import *
 
@@ -10,34 +11,25 @@ import pandas
 mpl.use('TkAgg')
 
 
-class SampleBase():
+class SampleBase:
     def __init__(self, args):
         self.args = args
         self.debugPan = args.debugPan
 
         # if self.debugPan is True:
         self.rx = Rx2438(args=args)
-        self.pan = LZP3(args=args)
 
         io_rx_test(self.args, self.rx)
 
-        self.pan.init_without_adc()
-
         self.freq, self.power = io_set_tx(self.args)
-        self.rx.setFreq((self.freq))
-
-    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
-        self.pan.init(acc, dec, v)
+        self.rx.setFreq(self.freq)
 
     def _use_config_dict(self, cmd_args, check_args):
         '''
         用于保证调用参数优先于配置文件参数
-        :param max_angle:
-        :param delay:
-        :param stride:
-        :param step_block:
-        :param show_pic:
-        :param save_pic:
+
+        :param cmd_args:
+        :param check_args:
         :return:
         '''
 
@@ -87,3 +79,25 @@ class SampleBase():
                     break
                 else:
                     data_type = input("文件格式有问题，仅限于txt,xlsx,csv，请重新选择: ")
+
+
+class Sample300PanBase(SampleBase):
+    def __init__(self, args):
+        super(Sample300PanBase, self).__init__(args)
+
+        self.pan = HY300mm(args=args)
+        self.pan.init_without_adc()
+
+    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
+        self.pan.init(acc, dec, v)
+
+
+class Sample200PanBase(SampleBase):
+    def __init__(self, args):
+        super(Sample200PanBase, self).__init__(args)
+
+        self.pan = LZP3(args=args)
+        self.pan.init_without_adc()
+
+    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
+        self.pan.init(acc, dec, v)
