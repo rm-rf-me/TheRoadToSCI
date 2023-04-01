@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from ContinuousConfig import ContinuousConfig
 from utils.cmdIO import *
 from AnnularSampling_HYGX.util.SampleBase import SampleBase
@@ -147,11 +149,14 @@ class ContinuousSampling(SampleBase):
             data[note2].append(' ')
             time.sleep(sampling_gap)
 
+        if self.args.cmd is True:
+            print(save_name)
+
         if show_pic or save_pic:
             fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
 
         self.save_file(data, fig, save_pic, data_type, save_name)
-
+        plt.close("all")
         return data
 
     def goback_continuous(self, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
@@ -160,26 +165,58 @@ class ContinuousSampling(SampleBase):
             acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
 
         self.get_series_continuous_rel(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic,
-                                       data_type, save_name)
+                                       data_type, save_name+'_GO')
         self.get_series_continuous_rel(-acc_angle, -dec_angle, -stop_angle, tot_time, sampling_gap, show_pic, save_pic,
-                                       data_type, save_name)
+                                       data_type, save_name+'_BACK')
 
-    def goback_goback_continuous_batch(self, speeds, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
-                                       sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None):
+    def goback_single_continuous_batch(self, speeds, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
+                                       sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None, sample_block=None):
         acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
             acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
         self.args.cmd = False
-        for i in speeds:
-            save_name += "_T" + str(i)
-            self.goback_continuous(acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+        for i in range(len(speeds)):
+            if save_name is None:
+                name = "_T" + str(speeds[i])
+            else:
+                name = save_name[i] + "_T" + str(speeds[i])
+
+            # self.goback_continuous(acc_angle, dec_angle, stop_angle, i, sampling_gap, show_pic, save_pic, data_type, save_name)
+            self.get_series_continuous_rel(acc_angle, dec_angle, stop_angle, speeds[i], sampling_gap, show_pic, save_pic,
+                                       data_type, name)
+
+            acc_angle = -acc_angle
+            dec_angle = -dec_angle
+            stop_angle = -stop_angle
+            if sample_block is not None:
+                input("回车继续：")
+
+    def goback_goback_continuous_batch(self, speeds, acc_angle=None, dec_angle=None, stop_angle=None, tot_time=None,
+                                       sampling_gap=None, show_pic=None, save_pic=None, data_type=None, save_name=None, sample_block=None):
+        acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name = self._use_config(
+            acc_angle, dec_angle, stop_angle, tot_time, sampling_gap, show_pic, save_pic, data_type, save_name)
+        self.args.cmd = False
+        for i in range(len(speeds)):
+            if save_name is None:
+                name = "_T" + str(speeds[i])
+            else:
+                name = save_name[i] + "_T" + str(speeds[i])
+
+            # self.goback_continuous(acc_angle, dec_angle, stop_angle, i, sampling_gap, show_pic, save_pic, data_type, save_name)
+            self.goback_continuous(acc_angle, dec_angle, stop_angle, speeds[i], sampling_gap, show_pic, save_pic,
+                                       data_type, name)
+
+            if sample_block is not None and i != len(speeds) - 1:
+                input("请移动表面：")
 
 def get_batch(sampling):
-    from script.get_lstm_data import get_lstm_all_surface_data
-    get_lstm_all_surface_data(sampling)
+    from script.get_lstm_data import get_lstm_one_surface_data
+    get_lstm_one_surface_data(sampling)
 
 if __name__ == '__main__':
     config = ContinuousConfig()
     args = config.getArgs()
     haha = ContinuousSampling(args)
 
-    haha.goback_continuous()
+    # haha.goback_continuous()
+    get_batch(haha)
+
