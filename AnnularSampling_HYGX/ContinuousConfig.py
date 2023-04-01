@@ -23,13 +23,13 @@ class ContinuousConfig(BaseConfig):
         # self.parser.add_argument('--v', type=float, default=8)
 
         # 加速区长度
-        self.parser.add_argument('--acc_angle', type=float, default=-10)
+        self.parser.add_argument('--acc_angle', type=float, default=20)
 
         # 减速角，也就是加速区长度+匀速采样区长度
-        self.parser.add_argument('--dec_angle', type=float, default=-110)
+        self.parser.add_argument('--dec_angle', type=float, default=120)
 
         # 停止角，也就是三区总和
-        self.parser.add_argument('--stop_angle', type=float, default=-120)
+        self.parser.add_argument('--stop_angle', type=float, default=140)
 
         # 匀速区总用时，单位秒
         self.parser.add_argument('--tot_time', type=float, default=30)

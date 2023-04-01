@@ -19,7 +19,7 @@ base_config = {
     "safe": {
         "acc": 10,
         "dec": 10,
-        "v": 10
+        "v": 20
     }
 }
 
