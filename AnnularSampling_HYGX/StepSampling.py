@@ -76,7 +76,7 @@ class StepSampling(SampleBase):
 
     # angle正数为顺时针，负数为逆时针
     def get_series_step_rel(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None,
-                            save_pic=None, data_type=None):
+                            save_pic=None, data_type=None, save_name=None):
         '''
         一步一停测得一组数据
 
@@ -156,14 +156,14 @@ class StepSampling(SampleBase):
         if show_pic or save_pic:
             fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm', show_pic=show_pic)
 
-        self.save_file(data, fig, save_pic, data_type)
+        self.save_file(data, fig, save_pic, data_type, save_name)
 
 
         return data
 
 
     def goback_step(self, max_angle=None, delay=None, stride=None, step_block=None, show_pic=None, save_pic=None,
-                    data_type=None):
+                    data_type=None, save_name=None):
         '''
         往返采样函数，是get_series_step_rel的简单封装，一次往返后回到原点，参数与get_series_step_rel保持一致
 
@@ -182,13 +182,18 @@ class StepSampling(SampleBase):
                                                                                                step_block, show_pic,
                                                                                                save_pic, data_type)
 
-        self.get_series_step_rel(max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
-        self.get_series_step_rel(-max_angle, delay, stride, step_block, show_pic, save_pic, data_type)
+        self.get_series_step_rel(max_angle, delay, stride, step_block, show_pic, save_pic, data_type, save_name)
+        self.get_series_step_rel(-max_angle, delay, stride, step_block, show_pic, save_pic, data_type, save_name)
 
+def get_batch(sampling):
+    from script.get_pvc_data import get_batch_data
+    get_batch_data(sampling)
 
 if __name__ == '__main__':
     config = StepConfig()
     args = config.getArgs()
     haha = StepSampling(args)
+    haha.args.cmd = False
 
-    haha.goback_step()
+    # haha.goback_step()
+    get_batch(haha)

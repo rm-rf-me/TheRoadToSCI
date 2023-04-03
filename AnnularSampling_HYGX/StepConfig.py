@@ -12,25 +12,25 @@ class StepConfig(BaseConfig):
         self.parser.add_argument('--power', type=str, default='0')
 
         # 加速加速度，米/秒^2
-        self.parser.add_argument('--acc', type=float, default=8)
+        self.parser.add_argument('--acc', type=float, default=10)
 
         # 减速加速度，米/秒^2
-        self.parser.add_argument('--dec', type=float, default=6)
+        self.parser.add_argument('--dec', type=float, default=10)
 
         # 最大速度阈值，米/秒，超过15会丢步
-        self.parser.add_argument('--v', type=float, default=8)
+        self.parser.add_argument('--v', type=float, default=20)
 
         # 步内等待时间，从转盘完全停止开始计时，秒
-        self.parser.add_argument('--delay', type=float, default=1)
+        self.parser.add_argument('--delay', type=float, default=0.3)
 
         # 步长，可以是小数
-        self.parser.add_argument('--stride', type=float, default=1)
+        self.parser.add_argument('--stride', type=float, default=2)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-        self.parser.add_argument('--max_angle', type=float, default=120)
+        self.parser.add_argument('--max_angle', type=float, default=160)
 
         # 单条数据测量结束后是否展示曲线
-        self.parser.add_argument('--show_pic', type=bool, default=True)
+        self.parser.add_argument('--show_pic', type=bool, default=False)
 
         # 单条数据测量结束后是否保存曲线
         self.parser.add_argument('--save_pic', type=bool, default=True)

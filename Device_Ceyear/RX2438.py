@@ -35,9 +35,16 @@ class Rx2438:
     def _write(self, cmd):
         return self.haha.write(cmd)
 
+def testTx():
+    rm = visa.ResourceManager()
+    haha = rm.open_resource('TCPIP0::169.254.216.80::6666::SOCKET', read_termination='\n')
+    print(haha)
+    print(haha.query("*IDN?"))
+
 
 if __name__ == '__main__':
     config = StepConfig()
     args = config.getArgs()
     rx = Rx2438(args)
     print(rx.getPower())
+    testTx()

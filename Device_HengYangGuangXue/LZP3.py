@@ -79,19 +79,22 @@ class LZP3:
         :return:
         '''
         cmd = "P_ACC_DEC_V " + str(self.obj)
-        if self.safe['acc'] > acc > 0:
+        if self.safe['acc'] >= acc > 0:
             cmd += " " + str(int(acc * self.angle_step))
         else:
+            print("[ERROR] acc illegal")
             return "[ERROR] acc illegal"
 
-        if self.safe['dec'] > dec > 0:
+        if self.safe['dec'] >= dec > 0:
             cmd += " " + str(int(dec * self.angle_step))
         else:
+            print("[ERROR] dec illegal")
             return "[ERROR] dec illegal"
 
-        if self.safe['v'] > v > 0:
+        if self.safe['v'] >= v > 0:
             cmd += " " + str(int(v * self.angle_step))
         else:
+            print("[ERROR] v illegal")
             return "[ERROR] v illegal"
 
         self._send(cmd)
