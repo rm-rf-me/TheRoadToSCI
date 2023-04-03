@@ -52,7 +52,11 @@ class SampleBase:
 
     def get_file_name(self, path):
         # name = './data/' + str(time.time()).split('.')[0] + '-F' + str(self.freq) + '-P' + str(self.power) + path
-        name = './data/' + time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time())) + '_' + path
+        if path[0] == '_':
+            mid = ''
+        else:
+            mid = '_'
+        name = './data/' + time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time())) + mid + path
         return name
 
     def save_file(self, data, fig, save_pic, data_type, path=None):

@@ -13,8 +13,8 @@ class Continuous300Sampling(ContinuousSamplingBase, Sample300PanBase):
 
 
 def get_batch(sampling):
-    from script.get_lstm_data import get_lstm_all_surface_data
-    get_lstm_all_surface_data(sampling)
+    from script.get_lstm_data import get_lstm_one_surface_data
+    get_lstm_one_surface_data(sampling)
 
 
 if __name__ == '__main__':
@@ -22,4 +22,5 @@ if __name__ == '__main__':
     args = config.getArgs()
     haha = Continuous300Sampling(args)
 
-    haha.goback_continuous()
+    # haha.goback_continuous()
+    get_batch(haha)

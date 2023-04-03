@@ -1,13 +1,15 @@
-def get_lstm_one_surface_data(sampling, surface_name, repid_times=12):
-    speeds = [10, 20, 30]
-    for i in range(repid_times):
-        if i % 3 == 0 and i != 0:
-            input("请旋转一下表面: ")
-        elif i != 0:
-            input("请移动一下表面: ")
-        save_name = surface_name
 
-        sampling.goback_goback_continuous_batch(speeds, save_name=save_name)
+def get_lstm_edge_surface_data(sampling, ):
+    pass
+def get_lstm_one_surface_data(sampling):
+    no = 7
+    speeds = [10, 10, 10, 10, 10]
+    pos_name = ['_L2', '_L1', '_Mid', '_R1', '_R2']
+    for dir in range(4):
+        input("请将表面NO%d置于%d方向上，位置从%s开始：" % (no, dir+1, pos_name[0].split('_')[-1]))
+        save_name = ['_NO' + str(no) + '_Dir' + str(dir + 1) + x for x in pos_name]
+        cmd_args = {'speeds': speeds, 'save_name': save_name}
+        sampling.goback_goback_continuous_batch(cmd_args, sample_block=True)
 
 
 def get_lstm_all_surface_data(sampling):

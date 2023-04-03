@@ -1,5 +1,6 @@
 from .base_sampling import SampleBase
 from utils.cmdIO import *
+import matplotlib.pyplot as plt
 
 import random
 
@@ -86,12 +87,15 @@ class ContinuousSamplingBase(SampleBase):
             data[note2].append(' ')
             time.sleep(cmd_args['sampling_gap'])
 
+        if self.args.cmd is True:
+            print(cmd_args['save_name'])
+
         if cmd_args['show_pic'] or cmd_args['save_pic']:
             fig = self.show_pic(data['angle'], data['value'], xlabel='angle', ylabel='dBm',
                                 show_pic=cmd_args['show_pic'])
 
         self.save_file(data, fig, cmd_args['save_pic'], cmd_args['data_type'], cmd_args['save_name'])
-
+        plt.close("all")
         return data
 
     def goback_continuous(self, cmd_args=None):
@@ -99,18 +103,28 @@ class ContinuousSamplingBase(SampleBase):
             cmd_args = {}
 
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
+        go_args = cmd_args
+        go_args['save_name'] += '_BACK'
+        back_args = cmd_args
+        back_args['save_name'] += '_BACK'
+        self.get_series_continuous_rel(go_args)
+        self.get_series_continuous_rel(back_args)
 
-        self.get_series_continuous_rel(cmd_args)
-        self.get_series_continuous_rel(cmd_args)
-
-    def goback_goback_continuous_batch(self, cmd_args=None):
+    def goback_goback_continuous_batch(self, cmd_args=None, sample_block=None):
         if cmd_args is None:
             cmd_args = {}
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
         self.args.cmd = False
-        for i in cmd_args['speeds']:
-            cmd_args['save_name'] += "_T" + str(i)
+        for i in range(len(cmd_args['speeds'])):
+            if cmd_args['save_name'] is None:
+                cmd_args['save_name'] = '_T' + str(cmd_args['speeds'][i])
+            else:
+                cmd_args['save_name'] = cmd_args['save_name'] + "_T" + str(cmd_args['speeds'][i])
+            cmd_args['tot_time'] = cmd_args['speeds'][i]
             self.goback_continuous(cmd_args)
+
+            if sample_block is not None and i != len(cmd_args['speeds']) - 1:
+                input("请移动表面：")
 
 
 class StepSamplingBase(SampleBase):
