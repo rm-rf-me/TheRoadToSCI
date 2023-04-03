@@ -1,6 +1,7 @@
 from Device.Device_ShenZhenHengYu.HY300mm import HY300mm
 from Device.Device_HengYangGuangXue.LZP3 import LZP3
 from Device.Device_Ceyear.RX2438 import Rx2438
+from Device.Device_Ceyear.TX1465 import Tx1465
 from utils.cmdIO import *
 
 import matplotlib.pyplot as plt
@@ -17,12 +18,19 @@ class SampleBase:
         self.debugPan = args.debugPan
 
         # if self.debugPan is True:
-        self.rx = Rx2438(args=args)
+        self.rx = Rx2438(args)
+
+        self.tx = Tx1465(args)
 
         io_rx_test(self.args, self.rx)
 
-        self.freq, self.power = io_set_tx(self.args)
+        self.freq, self.power, self.multi = io_set_rx(self.args)
+
+        self.tx.init(self.freq, self.power, self.multi)
+
         self.rx.setFreq(self.freq)
+
+
 
     def _use_config_dict(self, cmd_args, check_args):
         '''

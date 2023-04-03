@@ -16,6 +16,33 @@ class Tx1465:
     def check(self):
         print(self._query('*IDN??\n'))
 
+    def init(self, freq, power, multi):
+        self.set_mode()
+        self.setMultiplier(multi)
+        self.setPower(power)
+        self.setFreq(freq)
+        self.set_on()
+        print("set tx: freq %s power %s multi %s, 信号打开" % (freq, power, multi))
+
+    def init_without_freq(self, power, multi):
+        self.set_mode()
+        self.setMultiplier(multi)
+        self.setPower(power)
+        self.set_on()
+        print("set tx: power %s multi %s, 信号打开" % (power, multi))
+
+    def set_on(self):
+        print("射频输出")
+        return self._write('OUTPut 1\n')
+
+    def set_off(self):
+        print("射频关闭")
+        return self._write('OUTPut 0\n')
+
+    def set_mode(self):
+        print("设置连续波信号")
+        return self._write('FREQ:FIX\n')
+
     def setMultiplier(self, num):
         print("tx set multiplier: %s" % num)
         return self._write('FREQuency:MULTiplier ' + num + '\n')

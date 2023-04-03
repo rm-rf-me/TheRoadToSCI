@@ -18,19 +18,18 @@ def io_set_adv(args):
     return a, d, v
 
 
-def io_set_tx(args):
-    freq = args.freq
-    power = args.power
+def io_set_rx(args):
 
-    qq = input("Config文件中配置当前频率为%sGHz，当前功率为%sdBm，若正确请敲回车，若不正确请输n：" % (
-        args.freq, args.power))
+    qq = input("Config文件中配置当前频率为%sGHz，当前功率为%sdBm, 倍频为%s，若正确请敲回车，若不正确请输n：" % (
+        args.freq, args.power, args.multi))
     if qq == 'n' or qq == 'N':
-        freq, power = input("设置当前的频率和功率，只写数字，默认单位为GHz和dBm，空格隔开：").split()
+        freq, power, multi = input("设置当前的频率和功率，只写数字，默认单位为GHz和dBm，空格隔开：").split()
     else:
         freq = args.freq
         power = args.power
+        multi = args.multi
 
-    return freq, power
+    return freq, power, multi
 
 
 def io_get_note(args):

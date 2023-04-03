@@ -21,7 +21,7 @@ class SurfaceData:
         self.arduino = LittleMotor(args)
         # self.file_path = self.args.DataPath
 
-        self.freq, self.power = io_set_tx(self.args)
+        self.freq, self.power = io_set_rx(self.args)
 
     def getOne(self, start_angle, end_angle, speed, dirr=None):
         # TODO:

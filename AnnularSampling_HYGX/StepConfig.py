@@ -5,12 +5,6 @@ class StepConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
-        # 当前使用的频率，字符串形式，用于记录
-        self.parser.add_argument('--freq', type=str, default='140')
-
-        # 当前使用的功率，浮点数形式，用于记录，单位为dbm
-        self.parser.add_argument('--power', type=str, default='0')
-
         # 加速加速度，米/秒^2
         self.parser.add_argument('--acc', type=float, default=8)
 
