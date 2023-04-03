@@ -23,7 +23,7 @@ def io_set_rx(args):
     qq = input("Config文件中配置当前频率为%sGHz，当前功率为%sdBm, 倍频为%s，若正确请敲回车，若不正确请输n：" % (
         args.freq, args.power, args.multi))
     if qq == 'n' or qq == 'N':
-        freq, power, multi = input("设置当前的频率和功率，只写数字，默认单位为GHz和dBm，空格隔开：").split()
+        freq, power, multi = input("设置当前的频率、功率和倍频，只写数字，默认单位为GHz和dBm，空格隔开：").split()
     else:
         freq = args.freq
         power = args.power

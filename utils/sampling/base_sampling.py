@@ -42,8 +42,8 @@ class SampleBase:
         '''
 
         for i in check_args:
-            if cmd_args[i] is None:
-                cmd_args[i] = self.args.__dict__(i)
+            if i not in cmd_args:
+                cmd_args[i] = getattr(self.args, i)
 
         return cmd_args
 
@@ -69,7 +69,7 @@ class SampleBase:
 
     def save_file(self, data, fig, save_pic, data_type, path=None):
         # 数据保存
-        if path is None:
+        if path is None or path is "":
             path = io_get_file_name(self.args)
         if path != 'n' or path != 'N':
             # 默认路径为XXXSampling_/data/，命名格式为 时间戳-频率-功率-命令.对应格式

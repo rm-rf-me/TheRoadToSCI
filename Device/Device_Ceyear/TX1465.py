@@ -8,7 +8,7 @@ class Tx1465:
         rm = visa.ResourceManager()
         # res = rm.list_resources()
         # print('find resources: ', res)
-        self.haha = rm.open_resource(args.rxPath, read_termination='\n')
+        self.haha = rm.open_resource(args.txPath, read_termination='\n')
         print("Tx连接成功: " + str(self.haha))
         # self.setFreq(self.args.freq)
         # print("Rx2438 freq :", self.args.freq)

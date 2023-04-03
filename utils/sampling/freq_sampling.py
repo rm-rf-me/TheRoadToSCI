@@ -21,7 +21,7 @@ class FreqSamplingBase(SampleBase):
             'save_name'
         ]
 
-    def get_series_step_freq(self, cmd_args):
+    def get_series_step_freq(self, cmd_args=None):
         if cmd_args is None:
             cmd_args = {}
 
@@ -59,7 +59,8 @@ class FreqSamplingBase(SampleBase):
             if sq > eq:
                 break
 
-            self.tx.setFreq(sq)
+            self.tx.setFreq(str(sq))
+            self.rx.setFreq(str(sq))
             time.sleep(cmd_args['delay'])
             val = self.rx.getPower()
             now = time.time()
@@ -69,7 +70,7 @@ class FreqSamplingBase(SampleBase):
             data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
             data['use_time'].append(now - start_time)
             data['freq'].append(sq)
-            data['value'].append(val)
+            data['value'].append(float(val))
             data[note1].append(' ')
             data[note2].append(' ')
 

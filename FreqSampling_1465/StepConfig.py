@@ -9,7 +9,7 @@ class StepConfig(BaseConfig):
         self.parser.add_argument('--start_freq', type=float, default=120)
 
         # 结束频率，约定大于开始频率，单位为GHz
-        self.parser.add_argument('--end_freq', type=float, default=165)
+        self.parser.add_argument('--end_freq', type=float, default=125)
 
         # 步长，约定为正数，单位为GHz
         self.parser.add_argument('--stride', type=float, default=0.1)
