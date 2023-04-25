@@ -113,3 +113,17 @@ class Sample200PanBase(SampleBase):
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan.init(acc, dec, v)
+
+
+class Sample200and300PanBase(SampleBase):
+    def __init__(self, args):
+        super(Sample200and300PanBase, self).__init__(args)
+
+        self.pan200 = LZP3(args=args)
+        self.pan300 = HY300mm(args=args)
+        self.pan200.init_without_adc()
+        self.pan300.init_without_adc()
+
+    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
+        self.pan200.init(acc, dec, v)
+        self.pan300.init(acc, dec, v)
