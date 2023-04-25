@@ -15,7 +15,7 @@ class ContinuousConfig(BaseConfig):
         self.parser.add_argument('--stop_angle', type=float, default=9)
 
         # 匀速区总用时，单位秒
-        self.parser.add_argument('--tot_time', type=float, default=30)
+        self.parser.add_argument('--tot_time', type=float, default=1)
 
         # 采样间距，单位秒
         self.parser.add_argument('--sampling_gap', type=float, default=0.1)

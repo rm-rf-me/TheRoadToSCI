@@ -105,9 +105,15 @@ class ContinuousSamplingBase(SampleBase):
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
         go_args = cmd_args
         go_args['save_name'] += '_BACK'
+        self.get_series_continuous_rel(go_args)
         back_args = cmd_args
         back_args['save_name'] += '_BACK'
-        self.get_series_continuous_rel(go_args)
+        if 'acc_angle' in back_args.keys():
+            back_args['acc_angle'] = -back_args['acc_angle']
+            back_args['dec_angle'] = -back_args['dec_angle']
+            back_args['stop_angle'] = -back_args['stop_angle']
+        if 'max_angle' in back_args.keys():
+            back_args['max_angle'] = -back_args['max_angle']
         self.get_series_continuous_rel(back_args)
 
     def goback_goback_continuous_batch(self, cmd_args=None, sample_block=None):
