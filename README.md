@@ -4,6 +4,8 @@
 
 > 一个人就能优雅的做实验
 
+<img src="./doc/img/readme.png" alt="readme" style="zoom:25%;" />
+
 ### 版本记录
 
 * v6.0（未完成）：配套打包上位机软件
