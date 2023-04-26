@@ -4,7 +4,7 @@
 
 > 一个人就能优雅的做实验
 
-<img src="./doc/img/readme.png" alt="readme" style="zoom:25%;" />
+<img src="./doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
 
 ### 版本记录
 
