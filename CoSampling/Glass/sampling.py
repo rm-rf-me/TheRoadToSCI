@@ -1,5 +1,6 @@
 from config import CoGlassConfig
 from utils.sampling.base_sampling import Sample200and300PanBase
+from Device.util.Serial import Serial
 from utils.cmdIO import *
 
 import matplotlib as mpl
@@ -8,7 +9,8 @@ mpl.use('TkAgg')
 
 class CoGlassSampling(Sample200and300PanBase):
     def __init__(self, args):
-        super(CoGlassSampling, self).__init__(args=args)
+
+        super(CoGlassSampling, self).__init__(args, Serial(args))
 
         self.check_name = [
             'acc',

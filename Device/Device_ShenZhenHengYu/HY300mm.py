@@ -20,8 +20,8 @@ motor_config = {
 
 
 class HY300mm(XiaoMo):
-    def __init__(self, args):
-        super(HY300mm, self).__init__(args, motor_config)
+    def __init__(self, args, comm):
+        super(HY300mm, self).__init__(args, motor_config, comm)
 
 
 if __name__ == '__main__':

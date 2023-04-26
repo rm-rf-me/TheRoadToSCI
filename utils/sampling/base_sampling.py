@@ -94,10 +94,10 @@ class SampleBase:
 
 
 class Sample300PanBase(SampleBase):
-    def __init__(self, args):
+    def __init__(self, args, comm):
         super(Sample300PanBase, self).__init__(args)
 
-        self.pan = HY300mm(args=args)
+        self.pan = HY300mm(args, comm)
         self.pan.init_without_adc()
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
@@ -105,10 +105,10 @@ class Sample300PanBase(SampleBase):
 
 
 class Sample200PanBase(SampleBase):
-    def __init__(self, args):
+    def __init__(self, args, comm):
         super(Sample200PanBase, self).__init__(args)
 
-        self.pan = LZP3(args=args)
+        self.pan = LZP3(args, comm)
         self.pan.init_without_adc()
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
@@ -116,10 +116,10 @@ class Sample200PanBase(SampleBase):
 
 
 class Sample200and300PanBase(SampleBase):
-    def __init__(self, args):
+    def __init__(self, args, comm):
         super(Sample200and300PanBase, self).__init__(args)
 
-        self.pan200 = LZP3(args=args)
+        self.pan200 = LZP3(args, comm)
         self.pan300 = HY300mm(args=args)
         self.pan200.init_without_adc()
         self.pan300.init_without_adc()

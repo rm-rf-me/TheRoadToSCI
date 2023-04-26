@@ -20,8 +20,8 @@ motor_config = {
 
 
 class LZP3(XiaoMo):
-    def __init__(self, args):
-        super(LZP3, self).__init__(args, motor_config)
+    def __init__(self, args, comm):
+        super(LZP3, self).__init__(args, motor_config, comm)
 
 
 if __name__ == '__main__':
