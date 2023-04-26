@@ -2,7 +2,7 @@
 
 --2023.4.26，ljc
 
-> 一个人就能优雅的做实验
+> 一个人就能优雅地做实验
 
 <img src="./doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
 

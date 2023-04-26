@@ -1,6 +1,8 @@
-# 410自动实验系统开发手册（v1.2）
+# 410自动实验系统开发手册（v5.0）
 
---2023.3.26，ljc
+--2023.4.26，ljc
+
+> 一个人就能优雅地做实验
 
 ## 警告！
 
@@ -11,7 +13,7 @@
 
 ## 0.系统简介
 
-​
+
 本系统是以Python语言为主的、联合控制多种仪器设备协同进行太赫兹实验和数据采样的自动化系统。工程遵循面向对象思想，具有良好的扩展性和灵活性。支持LAN、串口、VISA多种通信协议，能对接包括微波功率计、信号发生器、电动旋转台、步进电机、单片机等设备。转台设备精度达到0.01度、单点采样时间在100ms以内，通讯时延低，实现序列数据的自动化采样和保存。
 
 ![框架](./img/框架.png)
@@ -105,7 +107,7 @@
 
 ### 2.5.电机转盘
 
-#### 2.5.1.控制箱
+#### 2.5.1.控制箱改装
 
 #### 2.5.2.上位机
 
@@ -120,27 +122,79 @@
 
 ```c
 .
-├── AnnularSampling_HYGX	  // 200mm转台的环型采样
-│   ├── GetData.py	// 采样主函数
-│   ├── config.py			// 采样配置文件
-│   ├── data			// 默认数据保存路径
-│   └── util			// 工具类
-│       └── base_config.py		// 基础配置项
-├── CentralSampling_LittleMotor	  // 42小步进电机中心采样
-│   ├── DemoConfig.py	// 采样配置文件
-│   ├── GetData.py	// 采样主函数
-│   └── data		// 默认数据保存路径
-├── Device_Ceyear		// 思仪设备接口类
-│   ├── RX2438.py		// 2438功率计
-│   └── __init__.py
-├── Device_HengYangGuangXue		// 恒洋光学设备接口类
-│   ├── LZP3.py		// 200mm电机转台
-│   └── __init__.py
-└── Device_LittleMotor	// 小电机接口类
-    ├── LittleMotor.py		// 小电机
+├── AnnularSampling_HY300mm		// 中心采样恒誉激光生产的300mm转台
+│   ├── ContinuousConfig.py
+│   ├── ContinuousSampling.py
+│   ├── StepConfig.py
+│   ├── StepSampling.py
+│   └── data
+│       └── __init__.py
+├── AnnularSampling_HYGX
+│   ├── ContinuousConfig.py
+│   ├── ContinuousSampling.py
+│   ├── StepConfig.py
+│   └── StepSampling.py
+├── CentralSampling_LittleMotor
+│   ├── GetData.py
+│   ├── config.py
+│   └── data
+│       └── __init__.py
+├── CoSampling
+│   └── Glass
+│       ├── config.py
+│       ├── data
+│       │   └── __init__.py
+│       └── sampling.py
+├── Device
+│   ├── Device_Ceyear
+│   │   ├── RX2438.py
+│   │   ├── TX1465.py
+│   │   └── __init__.py
+│   ├── Device_HengYangGuangXue
+│   │   ├── LZP3.py
+│   │   └── __init__.py
+│   ├── Device_LittleMotor
+│   │   ├── LittleMotor.py
+│   │   ├── __init__.py
+│   │   └── arduino
+│   │       └── Emm42_Arduino_WHILE.ino
+│   ├── Device_ShenZhenHengYu
+│   │   ├── HY300mm.py
+│   │   └── __init__.py
+│   ├── __init__.py
+│   └── util
+│       ├── Serial.py
+│       ├── XiaoMo.py
+│       └── __init__.py
+├── FreqSampling_1465
+│   ├── StepConfig.py
+│   ├── StepSampling.py
+│   └── data
+│       └── __init__.py
+├── README.md
+├── Tool
+├── doc
+│   ├── Development.md
+│   ├── QuickStart.md
+│   ├── img
+│   │   └── *.png
+│   ├── 开发手册.pdf
+│   └── 快速上手.pdf
+├── script
+│   ├── __init__.py
+│   ├── get_lstm_data.py
+│   └── get_pvc_data.py
+└── utils
     ├── __init__.py
-    └── arduino		// 小电机Arduino控制工程
-        └── Emm42_Arduino_WHILE.ino
+    ├── cmdIO.py
+    ├── config
+    │   ├── __init__.py
+    │   └── base_config.py
+    └── sampling
+        ├── __init__.py
+        ├── base_sampling.py
+        ├── freq_sampling.py
+        └── xiaomo_sampling.py
 ```
 
 * 如果没有开发意愿，则可以忽略所有Device开头的路径。只需关注每个XXXSampling开头的采样路径
