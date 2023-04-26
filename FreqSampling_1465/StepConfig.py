@@ -1,27 +1,24 @@
 from utils.config.base_config import BaseConfig
 
 
-class ContinuousConfig(BaseConfig):
+class StepConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
-        # 加速区长度
-        self.parser.add_argument('--acc_angle', type=float, default=3)
+        # 开始频率，约定小于结束频率，单位为GHz
+        self.parser.add_argument('--start_freq', type=float, default=120)
 
-        # 减速角，也就是加速区长度+匀速采样区长度
-        self.parser.add_argument('--dec_angle', type=float, default=6)
+        # 结束频率，约定大于开始频率，单位为GHz
+        self.parser.add_argument('--end_freq', type=float, default=125)
 
-        # 停止角，也就是三区总和
-        self.parser.add_argument('--stop_angle', type=float, default=9)
-
-        # 匀速区总用时，单位秒
-        self.parser.add_argument('--tot_time', type=float, default=1)
+        # 步长，约定为正数，单位为GHz
+        self.parser.add_argument('--stride', type=float, default=0.1)
 
         # 采样间距，单位秒
-        self.parser.add_argument('--sampling_gap', type=float, default=0.1)
+        self.parser.add_argument('--delay', type=float, default=1)
 
         # 单条数据测量结束后是否展示曲线
-        self.parser.add_argument('--show_pic', type=bool, default=False)
+        self.parser.add_argument('--show_pic', type=bool, default=True)
 
         # 单条数据测量结束后是否保存曲线
         self.parser.add_argument('--save_pic', type=bool, default=True)

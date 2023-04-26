@@ -1,5 +1,5 @@
-from Device_LittleMotor.LittleMotor import LittleMotor
-from Device_Ceyear.RX2438 import Rx2438
+from Device.Device_LittleMotor import LittleMotor
+from Device.Device_Ceyear.RX2438 import Rx2438
 from config import Config
 from utils.cmdIO import *
 
@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 mpl.use('TkAgg')
+
 
 class SurfaceData:
     def __init__(self, args):
@@ -20,8 +21,7 @@ class SurfaceData:
         self.arduino = LittleMotor(args)
         # self.file_path = self.args.DataPath
 
-        self.freq, self.power = io_set_tx(self.args)
-
+        self.freq, self.power = io_set_rx(self.args)
 
     def getOne(self, start_angle, end_angle, speed, dirr=None):
         # TODO:
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     x = []
     y = []
     for i in data:
-        x.append(i[1]-start)
+        x.append(i[1] - start)
         y.append(float(i[0]))
     print(x)
     print(y)

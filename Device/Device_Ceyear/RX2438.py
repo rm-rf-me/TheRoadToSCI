@@ -1,6 +1,7 @@
 import pyvisa as visa
 from AnnularSampling_HYGX.StepConfig import StepConfig
 
+
 class Rx2438:
     def __init__(self, args):
         self.args = args
@@ -12,6 +13,8 @@ class Rx2438:
         # self.setFreq(self.args.freq)
         # print("Rx2438 freq :", self.args.freq)
 
+    def check(self):
+        print(self._query('*IDN??\n'))
 
     def setFreq(self, freq):
         '''

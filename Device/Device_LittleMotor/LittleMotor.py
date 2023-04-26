@@ -7,7 +7,7 @@ class LittleMotor:
         # self.port = serial.tools.list_ports.comports()[args.port].device
         self.port = args.port
         self.comm = serial.Serial(self.port, baudrate=args.baud, timeout=args.commTimeout)
-        time.sleep(1)       # wait serial
+        time.sleep(1)  # wait serial
         print(self.comm)
         if 'open' == self._wait_receive():
             print("serial open")
@@ -77,7 +77,6 @@ class LittleMotor:
         use_time = self._wait_receive()
         return use_time
 
-
     def goback(self, dirr, angle, speed, mid_delay):
         # self._isAvailable()
         cmd = 'b'
@@ -118,10 +117,9 @@ class LittleMotor:
         return use_time
 
 
-
-
 if __name__ == '__main__':
     from MotorDemo.DemoConfig import Config
+
     config = Config()
     args = config.getArgs()
     haha = Arduino(args)
