@@ -31,7 +31,7 @@ class XiaoMo:
 
         print("设置定位运动模式 " + str(self.set_mode_p()))
 
-    def init(self, acc=1, dec=1, v=1):
+    def init(self, acc=1.0, dec=1.0, v=1.0):
         print("设置当前位置为零点 " + str(self.set_zero()) + ", now: " + str(self.get_p()))
 
         print("设置定位运动模式 " + str(self.set_mode_p()))

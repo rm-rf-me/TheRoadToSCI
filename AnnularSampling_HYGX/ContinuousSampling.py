@@ -1,6 +1,7 @@
 from ContinuousConfig import ContinuousConfig
 from utils.sampling.xiaomo_sampling import ContinuousSamplingBase
 from utils.sampling.base_sampling import Sample200PanBase
+from Device.util.Serial import Serial
 
 import matplotlib as mpl
 

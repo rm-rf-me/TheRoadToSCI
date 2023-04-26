@@ -3,6 +3,7 @@ from Device.Device_HengYangGuangXue.LZP3 import LZP3
 from Device.Device_Ceyear.RX2438 import Rx2438
 from Device.Device_Ceyear.TX1465 import Tx1465
 from utils.cmdIO import *
+from Device.util.Serial import Serial
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -94,10 +95,10 @@ class SampleBase:
 
 
 class Sample300PanBase(SampleBase):
-    def __init__(self, args, comm):
+    def __init__(self, args):
         super(Sample300PanBase, self).__init__(args)
-
-        self.pan = HY300mm(args, comm)
+        self.comm = Serial(args)
+        self.pan = HY300mm(args, self.comm)
         self.pan.init_without_adc()
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
@@ -105,10 +106,10 @@ class Sample300PanBase(SampleBase):
 
 
 class Sample200PanBase(SampleBase):
-    def __init__(self, args, comm):
+    def __init__(self, args):
         super(Sample200PanBase, self).__init__(args)
-
-        self.pan = LZP3(args, comm)
+        self.comm = Serial(args)
+        self.pan = LZP3(args, self.comm)
         self.pan.init_without_adc()
 
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
@@ -116,11 +117,11 @@ class Sample200PanBase(SampleBase):
 
 
 class Sample200and300PanBase(SampleBase):
-    def __init__(self, args, comm):
+    def __init__(self, args):
         super(Sample200and300PanBase, self).__init__(args)
-
-        self.pan200 = LZP3(args, comm)
-        self.pan300 = HY300mm(args=args)
+        self.comm = Serial(args)
+        self.pan200 = LZP3(args, self.comm)
+        self.pan300 = HY300mm(args, self.comm)
         self.pan200.init_without_adc()
         self.pan300.init_without_adc()
 
