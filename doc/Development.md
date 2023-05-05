@@ -41,14 +41,8 @@
 
 ### 1.2.Python
 
+* Python是一种方便快捷的脚本开发语言，语法简单和丰富的三方库使得该语言适合很多场景的快速开发
 * 本项目使用conda进行环境管理，关于python环境配置请参考https://github.com/rm-rf-me/Python-Setup-tutorial
-* 主要包：
-    * pyvisa
-    * pyserial
-    * pandas
-    * tqdm
-    * eventlet
-    * matplotlib
 
 ### 1.3.Visa
 
@@ -109,7 +103,12 @@
 
 #### 2.5.1.控制箱改装
 
+* 接线框图，通过电路改装和外壳开洞将两套电机驱动和供电连接到一个控制板上，通过串口统一控制。
+  * ![tot_pic_new](./img/tot_pic_new.jpeg)
+
 #### 2.5.2.上位机
+
+* 小墨控制板提供配套上位机，已安装至实验室笔记本桌面，建议通过USB连接，避免占用串口
 
 ## 3.代码框架
 
@@ -233,141 +232,6 @@
 
   注意三种参数的优先级递减，也就是说函数传参会覆盖config.py配置，而命令行交互会覆盖函数传参
 
-## 4.采样场景
+## 4.面向对象设计
 
-### 4.1.中心旋转跨步序列采样
-
-#### 4.1.1.支持设备
-
-* 42小电机
-
-#### 4.1.2.主要类方法
-
-### 4.2.圆环旋转跨步序列采样
-
-#### 4.2.1.支持设备
-
-* 200mm电机转台
-
-#### 4.2.2.主要类方法
-
-##### 转盘初始化
-
-```python
-GetData.init_pan(acc=5, dec=5, v=5)
-```
-
-* 配置电机参数，并设置当前位置为零点
-
-##### 单向采样
-
-* series代表序列，step代表单步模式，rel代表相对角度模式，即相对初始位置计算角度。
-
-  ```python
-  GetData.get_series_step_rel(
-    max_angle=None, # 旋转目标角
-    delay=None, 		# 单步延时
-    stride=None, 		# 步长
-    step_block=None, # 单步阻塞
-    show_pic=None,	# 序列展示曲线
-    save_pic=None, 	# 保存曲线
-    data_type=None	# 保存数据格式
-  )
-  ```
-
-* 单向采样函数，不建议使用，建议使用往返采样goback_step函数
-
-##### 往返采样
-
-```python
-GetData.goback_step(
-  max_angle=None, 		# 参数同上
-  delay=None, 
-  stride=None, 
-  step_block=None, 
-  show_pic=None, 
-  save_pic=None, 
-  data_type=None
-)
-```
-
-* 该函数直接调用了get_series_step_rel函数，控制电机做两次为一组的往返运动，最终电机回到初始位置，能保证每次采样的角度一致性，相对更加安全。
-
-##### 配置参数
-
-* 配置函数内容如下：
-
-  ```python
-  # 当前使用的频率，字符串形式，用于记录
-  self.parser.add_argument('--freq', type=str, default="None")
-  
-  # 当前使用的功率，浮点数形式，用于记录，单位为dbm
-  self.parser.add_argument('--power', type=float, default=0)
-  
-  # 加速加速度，米/秒^2
-  self.parser.add_argument('--acc', type=float, default=8)
-  
-  # 减速加速度，米/秒^2
-  self.parser.add_argument('--dec', type=float, default=6)
-  
-  # 最大速度阈值，米/秒，超过15会丢步
-  self.parser.add_argument('--v', type=float, default=8)
-  
-  # 步内等待时间，从转盘完全停止开始计时，秒
-  self.parser.add_argument('--delay', type=float, default=0.2)
-  
-  # 步长，可以是小数
-  self.parser.add_argument('--stride', type=float, default=2)
-  
-  # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-  self.parser.add_argument('--max_angle', type=float, default=10)
-  
-  # 单条数据采样结束后是否展示曲线
-  self.parser.add_argument('--show_pic', type=bool, default=True)
-  
-  # 单条数据采样结束后是否保存曲线
-  self.parser.add_argument('--save_pic', type=bool, default=False)
-  
-  # 每步采样后是否阻塞等待
-  self.parser.add_argument('--step_block', type=bool, default=False)
-  
-  # 数据保存格式，支持txt、xlsx、csv
-  self.parser.add_argument('--data_type', type=str, default='txt')
-  ```
-
-* 需要对对应参数进行修改时，仅需更改default=后面的默认值即可
-
-## 5.采样步骤
-
-### 5.1.中心旋转跨步序列采样
-
-### 5.2.圆环旋转跨步序列采样
-
-#### 1.设备搭建
-
-* 功率计使用网线连接
-* 控制箱开机，连接黑色串口线和蓝色usb线
-* 直尺固定，RxTx固定对齐
-* 信号发生器开机，放大器开机，配置信号参数
-* 功率计开机，配置参数
-
-#### 2.设备测试
-
-* 运行Device_Ceyear/RX2438.py文件，打印功率即为连接成功
-
-  ![lzptest](./img/txtest.png)
-
-* 运行Device_HengYangGuangXue/LZP3.py文件，电机旋转一度即为连接成功    ![lzptest](./img/lzptest.png)
-
-#### 3.初始位置
-
-* 使用转盘上位机软件，测量出目标采样角度范围
-* 小心碰撞
-
-#### 4.采样参数配置
-
-* 设置config文件
-
-#### 5.开始测量
-
-* 运行GetData.py文件，等待结果
+* ![class](./img/class.jpeg)
