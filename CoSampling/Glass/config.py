@@ -22,8 +22,8 @@ class CoGlassConfig(BaseConfig):
         self.parser.add_argument('--stride300', type=float, default=1)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-        self.parser.add_argument('--max_angle200', type=float, default=160)
-        self.parser.add_argument('--max_angle300', type=float, default=80)
+        self.parser.add_argument('--max_angle200', type=float, default=164)
+        self.parser.add_argument('--max_angle300', type=float, default=82)
 
         # 单条数据测量结束后是否展示曲线
         self.parser.add_argument('--show_pic', type=bool, default=True)

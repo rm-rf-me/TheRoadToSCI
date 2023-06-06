@@ -3,7 +3,8 @@ def get_lstm_edge_surface_data(sampling, ):
     pass
 def get_lstm_one_surface_data(sampling):
     no = 7
-    speeds = [10, 10, 10, 10, 10]
+    # speeds = [10, 10, 10, 10, 10]
+    speeds = [1, 1, 1, 1, 1]
     pos_name = ['_L2', '_L1', '_Mid', '_R1', '_R2']
     for dir in range(4):
         input("请将表面NO%d置于%d方向上，位置从%s开始：" % (no, dir+1, pos_name[0].split('_')[-1]))

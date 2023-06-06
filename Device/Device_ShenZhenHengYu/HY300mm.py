@@ -8,7 +8,7 @@ from Device.util.XiaoMo import XiaoMo
 #   obj为当前电机在控制板中的编号，与控制板接线有关
 motor_config = {
     "MStep": 20,
-    "DriveRatio": 180,
+    "DriveRatio": 10,
     "motType": 1.8,
     "obj": 1,
     "safe": {
@@ -20,8 +20,9 @@ motor_config = {
 
 
 class HY300mm(XiaoMo):
-    def __init__(self, args, comm):
-        super(HY300mm, self).__init__(args, motor_config, comm)
+    def __init__(self, args, comm, obj=1):
+        super(HY300mm, self).__init__(args, motor_config, comm, angle_reverse=True)
+        self.obj = obj
 
 
 if __name__ == '__main__':

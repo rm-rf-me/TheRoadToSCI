@@ -1,6 +1,7 @@
 from .base_sampling import SampleBase
 from utils.cmdIO import *
 import matplotlib.pyplot as plt
+import copy
 
 import random
 
@@ -103,17 +104,14 @@ class ContinuousSamplingBase(SampleBase):
             cmd_args = {}
 
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
-        go_args = cmd_args
-        go_args['save_name'] += '_BACK'
+        go_args = copy.deepcopy(cmd_args)
+        go_args['save_name'] += '_GO'
         self.get_series_continuous_rel(go_args)
-        back_args = cmd_args
+        back_args = copy.deepcopy(cmd_args)
         back_args['save_name'] += '_BACK'
-        if 'acc_angle' in back_args.keys():
-            back_args['acc_angle'] = -back_args['acc_angle']
-            back_args['dec_angle'] = -back_args['dec_angle']
-            back_args['stop_angle'] = -back_args['stop_angle']
-        if 'max_angle' in back_args.keys():
-            back_args['max_angle'] = -back_args['max_angle']
+        back_args['acc_angle'] = -back_args['acc_angle']
+        back_args['dec_angle'] = -back_args['dec_angle']
+        back_args['stop_angle'] = -back_args['stop_angle']
         self.get_series_continuous_rel(back_args)
 
     def goback_goback_continuous_batch(self, cmd_args=None, sample_block=None):
@@ -122,10 +120,10 @@ class ContinuousSamplingBase(SampleBase):
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
         self.args.cmd = False
         for i in range(len(cmd_args['speeds'])):
-            if cmd_args['save_name'] is None:
-                cmd_args['save_name'] = '_T' + str(cmd_args['speeds'][i])
+            if cmd_args['save_name'][i] is None:
+                cmd_args['save_name'][i] = '_T' + str(cmd_args['speeds'][i])
             else:
-                cmd_args['save_name'] = cmd_args['save_name'] + "_T" + str(cmd_args['speeds'][i])
+                cmd_args['save_name'][i] = cmd_args['save_name'][i] + "_T" + str(cmd_args['speeds'][i])
             cmd_args['tot_time'] = cmd_args['speeds'][i]
             self.goback_continuous(cmd_args)
 
@@ -241,5 +239,10 @@ class StepSamplingBase(SampleBase):
 
         cmd_args = self._use_config_dict(cmd_args, self.check_name)
 
-        self.get_series_step_rel(cmd_args)
-        self.get_series_step_rel(cmd_args)
+        go_args = copy.deepcopy(cmd_args)
+        # go_args['save_name'] += '_GO'
+        self.get_series_step_rel(go_args)
+        back_args = copy.deepcopy(cmd_args)
+        # back_args['save_name'] += '_BACK'
+        back_args['max_angle'] = -back_args['max_angle']
+        self.get_series_step_rel(back_args)

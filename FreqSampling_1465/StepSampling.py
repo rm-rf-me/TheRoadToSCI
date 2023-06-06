@@ -10,9 +10,12 @@ class StepFreqSampling(FreqSamplingBase):
         super(StepFreqSampling, self).__init(args)
 
 
+
+
 if __name__ == '__main__':
     config = StepConfig()
     args = config.getArgs()
     haha = StepFreqSampling(args)
+
 
     haha.get_series_step_freq()

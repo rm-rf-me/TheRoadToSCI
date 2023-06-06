@@ -1,3 +1,5 @@
+import time
+
 import pyvisa as visa
 from AnnularSampling_HYGX.StepConfig import StepConfig
 
@@ -19,8 +21,11 @@ class Tx1465:
     def init(self, freq, power, multi):
         self.set_mode()
         self.setMultiplier(multi)
+        time.sleep(0.3)
         self.setPower(power)
+        time.sleep(0.3)
         self.setFreq(freq)
+        time.sleep(0.3)
         self.set_on()
         print("set tx: freq %s power %s multi %s, 信号打开" % (freq, power, multi))
 

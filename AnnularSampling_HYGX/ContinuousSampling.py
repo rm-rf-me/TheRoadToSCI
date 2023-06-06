@@ -22,4 +22,5 @@ if __name__ == '__main__':
     args = config.getArgs()
     haha = Continuous200Sampling(args)
 
-    haha.goback_continuous()
+    # haha.goback_continuous()
+    get_batch(haha)

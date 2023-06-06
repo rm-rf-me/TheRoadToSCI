@@ -1,7 +1,7 @@
 from utils.config.base_config import BaseConfig
 
 
-class StepConfig(BaseConfig):
+class CoGlassConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
@@ -18,16 +18,18 @@ class StepConfig(BaseConfig):
         self.parser.add_argument('--delay', type=float, default=1)
 
         # 步长，可以是小数
-        self.parser.add_argument('--stride', type=float, default=2)
+        self.parser.add_argument('--stride200', type=float, default=1)
+        self.parser.add_argument('--stride300', type=float, default=1)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为顺时针，负数为逆时针
-        self.parser.add_argument('--max_angle', type=float, default=-180)
+        self.parser.add_argument('--max_angle200', type=float, default=3)
+        self.parser.add_argument('--max_angle300', type=float, default=5)
 
         # 单条数据测量结束后是否展示曲线
-        self.parser.add_argument('--show_pic', type=bool, default=True)
+        self.parser.add_argument('--show_pic', type=bool, default=False)
 
         # 单条数据测量结束后是否保存曲线
-        self.parser.add_argument('--save_pic', type=bool, default=False)
+        self.parser.add_argument('--save_pic', type=bool, default=Tru4e)
 
         # 每步测量后是否阻塞等待
         self.parser.add_argument('--step_block', type=bool, default=False)
