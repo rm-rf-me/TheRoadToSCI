@@ -1,3 +1,5 @@
+import copy
+
 from config import CoGlassConfig
 from utils.sampling.base_sampling import Sample200and300PanBase
 from Device.util.Serial import Serial
@@ -10,7 +12,7 @@ mpl.use('TkAgg')
 class CoGlassSampling(Sample200and300PanBase):
     def __init__(self, args):
 
-        super(CoGlassSampling, self).__init__(args, Serial(args))
+        super(CoGlassSampling, self).__init__(args)
 
         self.check_name = [
             'acc',
@@ -43,8 +45,12 @@ class CoGlassSampling(Sample200and300PanBase):
         }
 
         neg = 0
-        if cmd_args['max_angle'] < 0:
+        if cmd_args['max_angle200'] < 0:
             neg = 1
+
+        max_angle200 = copy.deepcopy(cmd_args['max_angle200'])
+        max_angle300 = copy.deepcopy(cmd_args['max_angle300'])
+
 
         while 1:
             val = self.rx.getPower()
@@ -107,7 +113,7 @@ class CoGlassSampling(Sample200and300PanBase):
                 cmd_args['max_angle200'] += cmd_args['stride200']
                 cmd_args['max_angle300'] += cmd_args['stride300']
             else:
-                cmd_args['max_angle200'] -= cmd_args['max_angle200']
+                cmd_args['max_angle200'] -= cmd_args['stride200']
                 cmd_args['max_angle300'] -= cmd_args['stride300']
 
         if cmd_args['show_pic'] or cmd_args['save_pic']:
@@ -116,4 +122,15 @@ class CoGlassSampling(Sample200and300PanBase):
 
         self.save_file(data, fig, cmd_args['save_pic'], cmd_args['data_type'])
 
+        if 'y' == input("返回初始位置输入y："):
+            self.pan200.p_rel(-max_angle200)
+            self.pan300.p_rel(-max_angle300)
+
         return data
+
+if __name__ == '__main__':
+    config = CoGlassConfig()
+    args = config.getArgs()
+    haha = CoGlassSampling(args)
+
+    haha.get_series_step_rel()

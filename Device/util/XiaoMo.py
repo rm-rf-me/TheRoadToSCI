@@ -8,7 +8,7 @@ xiaomo_config = {
 
 
 class XiaoMo:
-    def __init__(self, args, motor_config, comm):
+    def __init__(self, args, motor_config, comm, angle_reverse=False):
         '''
         LZP3控制接口，遵循rx323串口协议，控制命令遵循小墨科技MT22控制板命令
         :param args:
@@ -22,6 +22,7 @@ class XiaoMo:
         self.motType = motor_config['motType']
         self.MStep = motor_config['MStep']
         self.driveRatio = motor_config['DriveRatio']
+        self.angle_reverse = angle_reverse
 
         # 角度脉冲数，和细分、步进角、转动比有关
         self.angle_step = int((360 / self.motType * self.MStep * self.driveRatio) / 360)
@@ -90,6 +91,8 @@ class XiaoMo:
         :param angle:
         :return:
         '''
+        if self.angle_reverse:
+            angle = -angle
         cmd = "P_REL " + str(self.obj) + " " + str(angle * self.angle_step)
         self.comm.send(cmd)
         return self.comm.wait_receive()
@@ -100,6 +103,8 @@ class XiaoMo:
         :param angle:
         :return:
         '''
+        if self.angle_reverse:
+            angle = -angle
         cmd = "P_ABS " + str(self.obj) + " " + str(angle * self.angle_step)
         self.comm.send(cmd)
         return self.comm.wait_receive()
