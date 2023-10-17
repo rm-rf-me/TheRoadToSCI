@@ -1,7 +1,6 @@
 from ContinuousConfig import ContinuousConfig
 from utils.sampling.xiaomo_sampling import ContinuousSamplingBase
 from utils.sampling.base_sampling import Sample200PanBase
-from Device.util.Serial import Serial
 
 import matplotlib as mpl
 
@@ -14,7 +13,7 @@ class Continuous200Sampling(ContinuousSamplingBase, Sample200PanBase):
 
 
 def get_batch(sampling):
-    from script.get_lstm_data import get_lstm_one_surface_data
+    from utils.script import get_lstm_one_surface_data
     get_lstm_one_surface_data(sampling)
 
 if __name__ == '__main__':

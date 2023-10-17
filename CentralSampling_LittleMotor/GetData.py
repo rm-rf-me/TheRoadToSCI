@@ -1,5 +1,5 @@
-from Device.Device_LittleMotor import LittleMotor
-from Device.Device_Ceyear.RX2438 import Rx2438
+from utils.Device.Device_LittleMotor import LittleMotor
+from utils.Device.Device_Ceyear.RX2438 import Rx2438
 from config import Config
 from utils.cmdIO import *
 

@@ -2,7 +2,6 @@ import copy
 
 from config import CoGlassConfig
 from utils.sampling.base_sampling import Sample200and300PanBase
-from Device.util.Serial import Serial
 from utils.cmdIO import *
 
 import matplotlib as mpl

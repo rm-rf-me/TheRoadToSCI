@@ -4,7 +4,7 @@
 
 > 一个人就能优雅的做实验
 
-<img src="./doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
+<img src="utils/doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
 
 ### 版本记录
 
@@ -24,7 +24,7 @@
 * 系统控制的机械结构具有一定危险性，所搭载的实验器材贵重，使用不当很有可能会造成人员受伤或设备损坏。运行前要着重关注旋转角度、速度、加速度等参数配置的正确性。新手和重要版本更新时请认真阅读系统文档，初次使用请在他人指导下进行实验。
 * #### 有任何疑问不要莽，先找作者咨询！！！
 
-#### 	![tot_pic_new](./doc/img/tot_pic_new.jpeg)
+#### 	![tot_pic_new](utils/doc/img/tot_pic_new.jpeg)
 
 ## 1.系统特性
 
@@ -94,17 +94,17 @@
 
 5.0版本是一个底层设计相对成熟，完整支持当前全部设备的版本。若不添加新设备，后续的更新将以维护和修缮为主，架构设计理论上不会再有大范围调整。5.0版本文档仍在编写中，将持续更新。
 
-了解代码目录请参考[文件树](./doc/Development.md#31%E6%96%87%E4%BB%B6%E6%A0%91)。
+了解代码目录请参考[文件树](utils/doc/Development.md#31%E6%96%87%E4%BB%B6%E6%A0%91)。
 
 新版本同样支持原采样方案，细节略有改动，如有问题请联系我。
 
 ### 普通用户
 
-请参考未完成版的[快速上手](./doc/QuickStart.md)
+请参考未完成版的[快速上手](utils/doc/QuickStart.md)
 
 ### 开发者
 
-请参考未完成版的[开发手册](./doc/Development.md)
+请参考未完成版的[开发手册](utils/doc/Development.md)
 
 
 

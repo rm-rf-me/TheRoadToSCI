@@ -1,5 +1,5 @@
 import time
-from Device.util.XiaoMo import XiaoMo
+from utils.Device.util.XiaoMo import XiaoMo
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；

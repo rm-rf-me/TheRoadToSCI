@@ -29,7 +29,7 @@ class CoGlassConfig(BaseConfig):
         self.parser.add_argument('--show_pic', type=bool, default=False)
 
         # 单条数据测量结束后是否保存曲线
-        self.parser.add_argument('--save_pic', type=bool, default=Tru4e)
+        self.parser.add_argument('--save_pic', type=bool, default=True)
 
         # 每步测量后是否阻塞等待
         self.parser.add_argument('--step_block', type=bool, default=False)

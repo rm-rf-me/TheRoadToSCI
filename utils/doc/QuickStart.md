@@ -31,7 +31,7 @@
 
 * 本项目使用git/github进行版本管理和代码分发，需在使用前确认当前版本。点击界面右下角的分支图标：
 
-  ![branch](./img/branch.png)
+  ![branch](img/branch.png)
 
   可以浏览到本地和远程的多个版本分支：
 
@@ -51,13 +51,13 @@
 
 * 打开软件，电机左上角连接设备，会弹窗提示连接方式：USB和串口均可以使用（蓝色线为USB，黑色线为Rx232串口线），但由于系统Python代码使用串口控制，所以上位机**选择USB连接**。
 
-  ![conn](./img/conn.png)
+  ![conn](img/conn.png)
 
 #### 2.2.2.模式选择
 
 * 弹出主控制窗口，上方标签栏选择开环控制（物理单位）
 
-  ![mode](./img/mode.png)
+  ![mode](img/mode.png)
 
 #### 2.2.3.参数设置
 
@@ -68,7 +68,7 @@
     * 传动比：180
     * 步进角：1.8
 
-  ![control](./img/control.png)
+  ![control](img/control.png)
 
 * 设置绿色框中的电机运动参数：不要太大，10以内
 
@@ -82,7 +82,7 @@
 
 * 上位机提供几种运动模式：
 
-  ![move](./img/move.png)
+  ![move](img/move.png)
 
   只需要关注蓝色框中的绝对定位和相对定位即可：
 
@@ -111,7 +111,7 @@
 
 * 实验台如图：
 
-  ![200mm-data](./img/200mm-data.jpeg)
+  ![200mm-data](img/200mm-data.jpeg)
 
   默认Tx不动，Rx沿红箭头做圆周运动，此处涉及几个参数：
 
@@ -139,7 +139,7 @@
 
   ![lzptest](/Users/liou/Project/TheRoadToSCI/doc/img/txtest.png)
 
-* 运行Device_HengYangGuangXue/LZP3.py文件，电机旋转一度即为连接成功    ![lzptest](./img/lzptest.png)
+* 运行Device_HengYangGuangXue/LZP3.py文件，电机旋转一度即为连接成功    ![lzptest](img/lzptest.png)
 
 #### 3.明确运动参数
 
@@ -198,7 +198,7 @@
 
 * 点击左侧绿色三角运行GetData.py文件，开始和命令行交互
 
-  ![run](./img/run.png)
+  ![run](img/run.png)
 
 * 程序会首先进行设备连接确认和运动参数配置，跟随命令行引导即可
 

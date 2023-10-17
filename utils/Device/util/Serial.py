@@ -39,6 +39,7 @@ class Serial(object):
             if (self.comm.inWaiting() > 0):
                 res = self.comm.readline()[:-2]
                 return res
+
     def close(self):
         '''
         关闭连接
