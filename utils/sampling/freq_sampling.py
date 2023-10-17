@@ -90,7 +90,7 @@ class FreqSamplingBase(SampleBase):
         return data
 
 
-class JustKeepSamplingBase(OnlyRxSampleBase):
+class JustKeepSamplingBase(SampleBase):
     def __init__(self, args):
         super(JustKeepSamplingBase, self).__init__(args)
 
