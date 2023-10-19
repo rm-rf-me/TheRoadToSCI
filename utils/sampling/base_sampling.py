@@ -1,5 +1,6 @@
 from utils.Device.Device_ShenZhenHengYu.HY300mm import HY300mm
 from utils.Device.Device_HengYangGuangXue.LZP3 import LZP3
+from utils.Device.Device_HengYangGuangXue.LW_3 import LW3
 from utils.Device.Device_Ceyear.RX2438 import Rx2438
 from utils.Device.Device_Ceyear.TX1465 import Tx1465
 from utils.cmdIO import *
@@ -221,3 +222,16 @@ class Sample200and300PanBase(SampleBase):
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan200.init(acc, dec, v)
         self.pan300.init(acc, dec, v)
+
+class SamplePitchand200RotationBase(SampleBase):
+    def __init__(self, args):
+        super(SamplePitchand200RotationBase, self).__init__(args)
+        self.pan200 = LZP3(args, self.comm, obj=0)
+        self.pitch = LW3(args, self.comm, obj=1)
+        self.pan200.init_without_adc()
+        self.pitch.init_without_adc()
+
+    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
+        self.pan200.init(acc, dec, v)
+        self.pitch.init(acc, dec, v)
+

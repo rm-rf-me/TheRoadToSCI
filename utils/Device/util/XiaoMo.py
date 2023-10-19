@@ -16,8 +16,9 @@ class XiaoMo:
 
         self.comm = comm
         self.safe = motor_config['safe']
+        self.name = motor_config['Name']
 
-        print("Check LZP3: " + str(self.check()))
+        print("Check %s: " % self.name + str(self.check()))
 
         self.motType = motor_config['motType']
         self.MStep = motor_config['MStep']

@@ -7,9 +7,9 @@ from utils.Device.util.XiaoMo import XiaoMo
 #   motType为步进角，与电机种类有关；
 #   obj为当前电机在控制板中的编号，与控制板接线有关
 motor_config = {
-    "Name": "LZP-3",
+    "Name": "LW-3",
     "MStep": 20,
-    "DriveRatio": 180,
+    "DriveRatio": 288,
     "motType": 1.8,
     "obj": 0,
     "safe": {
@@ -20,9 +20,9 @@ motor_config = {
 }
 
 
-class LZP3(XiaoMo):
+class LW3(XiaoMo):
     def __init__(self, args, comm, obj=0):
-        super(LZP3, self).__init__(args, motor_config, comm)
+        super(LW3, self).__init__(args, motor_config, comm)
         self.obj = obj
 
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # 转盘连接测试
     config = StepConfig()
-    haha = LZP3(config.getArgs())
+    haha = LW3(config.getArgs())
 
     # 打印初始位置
     print("start: " + str(haha.get_p()))
