@@ -1,5 +1,5 @@
 import time
-from utils.Device.util.XiaoMo import XiaoMo
+from THzLab.Device.util.XiaoMo import XiaoMo
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；
@@ -7,24 +7,22 @@ from utils.Device.util.XiaoMo import XiaoMo
 #   motType为步进角，与电机种类有关；
 #   obj为当前电机在控制板中的编号，与控制板接线有关
 motor_config = {
-    "Name": "LW-3",
     "MStep": 20,
-    "DriveRatio": 288,
+    "DriveRatio": 10,
     "motType": 1.8,
-    "obj": 0,
+    "obj": 1,
     "safe": {
         "acc": 10,
         "dec": 10,
-        "v": 20
+        "v": 10
     }
 }
 
 
-class LW3(XiaoMo):
-    def __init__(self, args, comm, obj=0):
-        super(LW3, self).__init__(args, motor_config, comm)
-        self.obj = obj
-
+class HY300mm(XiaoMo):
+    def __init__(self, args, comm, obj=1):
+        super(HY300mm, self).__init__(args, motor_config, comm, angle_reverse=True)
+        # self.obj = obj
 
 
 if __name__ == '__main__':
@@ -32,7 +30,7 @@ if __name__ == '__main__':
 
     # 转盘连接测试
     config = StepConfig()
-    haha = LW3(config.getArgs())
+    haha = HY300mm(config.getArgs())
 
     # 打印初始位置
     print("start: " + str(haha.get_p()))

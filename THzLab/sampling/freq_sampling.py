@@ -1,9 +1,8 @@
-from .base_sampling import SampleBase, OnlyRxSampleBase
-from utils.cmdIO import *
+from .base_sampling import SampleBase
+from THzLab.utils.cmdIO import *
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import random
 import signal
 
 class FreqSamplingBase(SampleBase):

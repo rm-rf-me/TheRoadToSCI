@@ -1,6 +1,6 @@
 from ContinuousConfig import ContinuousConfig
-from utils.sampling.xiaomo_sampling import ContinuousSamplingBase
-from utils.sampling.base_sampling import Sample300PanBase
+from THzLab.sampling.xiaomo_sampling import ContinuousSamplingBase
+from THzLab.sampling.base_sampling import Sample300PanBase
 
 import matplotlib as mpl
 
@@ -13,7 +13,7 @@ class Continuous300Sampling(ContinuousSamplingBase, Sample300PanBase):
 
 
 def get_batch(sampling):
-    from utils.script import get_lstm_one_surface_data
+    from THzLab.script import get_lstm_one_surface_data
     get_lstm_one_surface_data(sampling)
 
 

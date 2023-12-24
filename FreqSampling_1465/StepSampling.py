@@ -1,5 +1,5 @@
 from StepConfig import StepConfig
-from utils.sampling.freq_sampling import FreqSamplingBase
+from THzLab.sampling.freq_sampling import FreqSamplingBase
 
 import matplotlib as mpl
 

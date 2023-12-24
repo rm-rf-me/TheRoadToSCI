@@ -1,5 +1,5 @@
 from .base_sampling import SampleBase
-from utils.cmdIO import *
+from THzLab.utils.cmdIO import *
 import matplotlib.pyplot as plt
 import copy
 

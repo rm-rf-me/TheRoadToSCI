@@ -1,8 +1,8 @@
 import copy
 
 from config import CoGlassConfig
-from utils.sampling.base_sampling import Sample200and300PanBase
-from utils.cmdIO import *
+from THzLab.sampling.base_sampling import Sample200and300PanBase
+from THzLab.utils.cmdIO import *
 
 import matplotlib as mpl
 

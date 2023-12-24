@@ -1,5 +1,5 @@
 from StepConfig import StepConfig
-from utils.sampling.freq_sampling import JustKeepSamplingBase
+from THzLab.sampling.freq_sampling import JustKeepSamplingBase
 import signal
 
 

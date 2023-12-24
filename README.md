@@ -4,7 +4,7 @@
 
 > 一个人就能优雅的做实验
 
-<img src="utils/doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
+<img src="THzLab/doc/img/readme.jpg" alt="readme" style="zoom:25%;" />
 
 ### 版本记录
 
@@ -26,7 +26,7 @@
 * #### 有任何疑问不要莽，先找作者咨询！！！
 
 ## [News] 全新的控制箱！
-<img src="utils/doc/img/newControlBox.jpg" alt="readme" style="zoom:25%;" />
+<img src="THzLab/doc/img/newControlBox.jpg" alt="readme" style="zoom:25%;" />
 
 ## 1.系统特性
 
@@ -124,11 +124,11 @@
 
 v2相关文档正在开发中，了解本系统可适当参考v1相关文档：
 
-* 了解v1代码目录请参考[文件树](utils/doc/Development.md#31%E6%96%87%E4%BB%B6%E6%A0%91)。
+* 了解v1代码目录请参考[文件树](THzLab/doc/Development.md#31%E6%96%87%E4%BB%B6%E6%A0%91)。
 * 普通用户 
-  * 请参考未完成版的[快速上手](utils/doc/QuickStart.md)
+  * 请参考未完成版的[快速上手](THzLab/doc/QuickStart.md)
 * 开发者 
-  * 请参考未完成版的[开发手册](utils/doc/Development.md)
+  * 请参考未完成版的[开发手册](THzLab/doc/Development.md)
 
 
 

@@ -1,12 +1,15 @@
 import serial
+from baseLogger import BaseLogger
 
 xiaomo_config = {
     "Baud": 115200,
     "Timeout": None,
 }
 
-class Serial(object):
+
+class Serial(BaseLogger):
     def __init__(self, args):
+        super(Serial, self).__init__()
         self.port = args.port
         self.baud = xiaomo_config['Baud']
         self.timeout = xiaomo_config['Timeout']
@@ -21,6 +24,7 @@ class Serial(object):
         # self.comm.write(text.encode())
         # now = time.time()
         cmd = text + '\r\n'
+        self.debug("Serial message to port %s" % self.comm.name, cmd.encode())
         return self.comm.write(cmd.encode())
 
     def receive(self):
@@ -28,7 +32,9 @@ class Serial(object):
         统一接受函数
         :return:
         '''
-        return self.comm.readline()[:-2]
+        msg = self.comm.readline()
+        self.debug("Serial message from port %s" % self.comm.name, msg)
+        return msg[:-2]
 
     def wait_receive(self):
         '''
@@ -36,9 +42,10 @@ class Serial(object):
         :return:
         '''
         while 1:
-            if (self.comm.inWaiting() > 0):
-                res = self.comm.readline()[:-2]
-                return res
+            if self.comm.inWaiting() > 0:
+                res = self.comm.readline()
+                self.debug("Serial message from port %s" % self.comm.name, res)
+                return res[:-2]
 
     def close(self):
         '''
@@ -46,7 +53,8 @@ class Serial(object):
         :return:
         '''
         self.comm.close()
-        print(self.comm.name + " closed.")
+        # print(self.comm.name + " closed.")
+        self.info(self.comm.name + " 端口成功关闭")
 
     def open(self):
         '''
@@ -54,15 +62,17 @@ class Serial(object):
         :return:
         '''
         if self.comm.isOpen():
-            print(self.port, "open success")
+            # print(self.port, "open success")
+            self.info(self.comm.name, "端口成功打开")
             return True
         else:
             self.comm.open()
-            res = self._receive()
-            print(res)
+            res = self.receive()
+            # print(res)
             if self.comm.isOpen():
-                print(self.port, "open success")
+                # print(self.port, "open success")
+                self.info(self.comm.name, "端口成功打开")
                 return True
             else:
-                print("open failed")
+                self.info(self.port, "端口打开失败")
                 return False

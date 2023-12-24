@@ -1,6 +1,6 @@
 from StepConfig import StepConfig
-from utils.sampling.xiaomo_sampling import StepSamplingBase
-from utils.sampling.base_sampling import Sample200PanBase
+from THzLab.sampling.xiaomo_sampling import StepSamplingBase
+from THzLab.sampling.base_sampling import Sample200PanBase
 
 import matplotlib as mpl
 

@@ -1,8 +1,8 @@
 import copy
 
 from config import P_R_Config
-from utils.sampling.base_sampling import SamplePitchand200RotationBase
-from utils.cmdIO import *
+from THzLab.sampling.base_sampling import SamplePitchand200RotationBase
+from THzLab.utils.cmdIO import *
 
 import matplotlib as mpl
 

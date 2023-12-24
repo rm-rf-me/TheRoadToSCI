@@ -1,4 +1,4 @@
-from utils.config.base_config import BaseConfig
+from THzLab.config.base_config import BaseConfig
 
 
 class StepConfig(BaseConfig):

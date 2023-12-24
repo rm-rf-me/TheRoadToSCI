@@ -1,7 +1,7 @@
-from utils.Device.Device_LittleMotor import LittleMotor
-from utils.Device.Device_Ceyear.RX2438 import Rx2438
+from THzLab.Device.Device_LittleMotor import LittleMotor
+from THzLab.Device.Device_Ceyear.RX2438 import Rx2438
 from config import Config
-from utils.cmdIO import *
+from THzLab.utils.cmdIO import *
 
 import threading
 import time
