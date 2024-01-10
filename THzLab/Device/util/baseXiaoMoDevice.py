@@ -5,6 +5,7 @@ from baseLogger import BaseLogger
 
 class BaseXiaoMoDevice(XiaoMo):
     def __init__(self):
+        super(BaseXiaoMoDevice, self).__init__()
         pass
 
     def set_zero(self):

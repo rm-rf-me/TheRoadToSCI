@@ -1,15 +1,17 @@
 import pyvisa as visa
 from AnnularSampling_HYGX.StepConfig import StepConfig
+from THzLab.Device.util import BaseLogger
 
 
-class Rx2438:
+class Rx2438(BaseLogger):
     def __init__(self, args):
+        super(Rx2438, self).__init__()
         self.args = args
         rm = visa.ResourceManager()
         # res = rm.list_resources()
         # print('find resources: ', res)
         self.haha = rm.open_resource(args.rxPath, read_termination='\n')
-        print("Rx连接成功: " + str(self.haha))
+        self.debug("Rx连接成功: " + str(self.haha))
         # self.setFreq(self.args.freq)
         # print("Rx2438 freq :", self.args.freq)
 

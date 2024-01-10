@@ -14,14 +14,14 @@ class XiaoMo(BaseLogger):
         LZP3控制接口，遵循rx323串口协议，控制命令遵循小墨科技MT22控制板命令
         :param args:
         '''
-
+        super(XiaoMo, self).__init__()
         self.comm = comm
         self.safe = motor_config['safe']
         self.name = motor_config['Name']
         self.obj = motor_config['obj']
 
         # print("Check %s: " % self.name + str(self.check()))
-        self.info("检查电机[%s]端口id[%d]: " % (self.name, self.obj) + str(self.check()))
+        self.info("检查电机[%s]端口id[%d]: " % (self.name, self.obj) + str(self._check()))
 
         self.motType = motor_config['motType']
         self.MStep = motor_config['MStep']
