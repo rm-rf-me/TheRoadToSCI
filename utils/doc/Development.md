@@ -165,7 +165,7 @@
 │   ├── __init__.py
 │   └── util		// 工具类
 │       ├── Serial.py		// 串口通信类
-│       ├── XiaoMo.py		// 小墨控制板接口类
+│       ├── XiaoMoRotate.py		// 小墨控制板接口类
 │       └── __init__.py
 ├── FreqSampling_1465		// 频率步进采样
 │   ├── StepConfig.py		// 频率步进配置函数
