@@ -6,13 +6,13 @@ class StepConfig(BaseConfig):
         super().__init__()
 
         # 开始频率，约定小于结束频率，单位为GHz
-        self.parser.add_argument('--start_freq', type=float, default=120)
+        self.parser.add_argument('--start_freq', type=float, default=220)
 
         # 结束频率，约定大于开始频率，单位为GHz
-        self.parser.add_argument('--end_freq', type=float, default=125)
+        self.parser.add_argument('--end_freq', type=float, default=325)
 
         # 步长，约定为正数，单位为GHz
-        self.parser.add_argument('--stride', type=float, default=0.1)
+        self.parser.add_argument('--stride', type=float, default=1)
 
         # 采样间距，单位秒
         self.parser.add_argument('--delay', type=float, default=1)

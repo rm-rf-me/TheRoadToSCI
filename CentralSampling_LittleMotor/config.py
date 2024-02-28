@@ -18,7 +18,7 @@ class Config:
 
         # 电机参数
         self.parser.add_argument('--motType', type=float, default=1.8)
-        self.parser.add_argument('--MStep', type=int, default=16)
+        self.parser.add_argument('--MStep', type=int, default=4)
 
         # 数据集配置
         self.parser.add_argument('--DataPath', type=str, default='./data/data.csv')
