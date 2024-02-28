@@ -7,6 +7,7 @@ from utils.Device.util.XiaoMo import XiaoMo
 #   motType为步进角，与电机种类有关；
 #   obj为当前电机在控制板中的编号，与控制板接线有关
 motor_config = {
+    "Name": "HYGX-300mm",
     "MStep": 20,
     "DriveRatio": 10,
     "motType": 1.8,

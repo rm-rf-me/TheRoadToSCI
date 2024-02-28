@@ -11,7 +11,7 @@ mpl.use('TkAgg')
 class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
     def __init__(self, args):
 
-        super(SamplePitchand200RotationBase, self).__init__(args)
+        super(ScatteringSpectrumSampling, self).__init__(args)
 
         self.check_name = [
             'acc',

@@ -8,10 +8,11 @@ import matplotlib as mpl
 
 mpl.use('TkAgg')
 
+
 class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
     def __init__(self, args):
 
-        super(SamplePitchand200RotationBase, self).__init__(args)
+        super(ScatteringSpectrumSampling, self).__init__(args)
 
         self.check_name = [
             'acc',
@@ -55,7 +56,8 @@ class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
         while 1:
             angle200 = self.pan200.get_p()
 
-            if (negRotation and cmd_args['max_angle_Rotation'] >= 0) or (not negRotation and cmd_args['max_angle_Rotation'] <= 0):
+            if (negRotation and cmd_args['max_angle_Rotation'] >= 0) or (
+                    not negRotation and cmd_args['max_angle_Rotation'] <= 0):
                 break
 
             val_record = []
@@ -88,7 +90,8 @@ class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
                 data['value'].append(float(val))
                 data[note].append(' ')
 
-                if (negPitch and cmd_args['max_angle_Pitch'] >= 0) or (not negPitch and cmd_args['max_angle_Pitch'] <= 0):
+                if (negPitch and cmd_args['max_angle_Pitch'] >= 0) or (
+                        not negPitch and cmd_args['max_angle_Pitch'] <= 0):
                     break
 
                 if negPitch:
@@ -115,14 +118,16 @@ class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
                     cmd_args['max_angle_Pitch'] -= cmd_args['stride_Pitch']
 
             if cmd_args['show_pic'] or cmd_args['save_pic']:
-                fig = self.show_pic(anglePitch_record, val_record, xlabel='tx on %s°' % cmd_args['max_angle_Rotation'], ylabel='dBm',
+                fig = self.show_pic(anglePitch_record, val_record, xlabel='tx on %s°' % cmd_args['max_angle_Rotation'],
+                                    ylabel='dBm',
                                     show_pic=cmd_args['show_pic'])
-                self.save_file_without_io(data, fig, 'tx-%s' % cmd_args['max_angle_Rotation'], cmd_args['save_pic'], cmd_args['data_type'])
+                self.save_file_without_io(data, fig, 'tx-%s' % cmd_args['max_angle_Rotation'], cmd_args['save_pic'],
+                                          cmd_args['data_type'])
 
             if negRotation:
                 self.pan200.p_rel(-cmd_args['stride_Rotation'])
             else:
-                self.pan200.p_rel(cmd_args['stride200stride_Rotation'])
+                self.pan200.p_rel(cmd_args['stride_Rotation'])
 
             pos200 = -1
             tmp200 = -2
@@ -140,10 +145,10 @@ class ScatteringSpectrumSampling(SamplePitchand200RotationBase):
             else:
                 cmd_args['max_angle_Rotation'] -= cmd_args['stride_Rotation']
 
-
         self.save_file(data, fig, cmd_args['save_pic'], cmd_args['data_type'])
 
         return data
+
 
 if __name__ == '__main__':
     config = P_R_Config()

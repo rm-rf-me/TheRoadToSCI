@@ -226,6 +226,7 @@ class Sample200and300PanBase(SampleBase):
 class SamplePitchand200RotationBase(SampleBase):
     def __init__(self, args):
         super(SamplePitchand200RotationBase, self).__init__(args)
+        self.comm = Serial(args)
         self.pan200 = LZP3(args, self.comm, obj=0)
         self.pitch = LW3(args, self.comm, obj=1)
         self.pan200.init_without_adc()
