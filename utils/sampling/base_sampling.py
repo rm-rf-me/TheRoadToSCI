@@ -240,8 +240,8 @@ class SampleDoubleStraight400Base(SampleBase):
     def __init__(self, args):
         super(SampleDoubleStraight400Base, self).__init__(args)
         self.comm = Serial(args)
-        self.straight1 = LDY_2_400(args, self.comm, obj=0)
-        self.straight2 = LDY_2_400(args, self.comm, obj=1)
+        self.straight1 = LDY_2_400(args, self.comm, obj=2)
+        self.straight2 = LDY_2_400(args, self.comm, obj=3)
         self.straight1.init_without_adc()
         self.straight2.init_without_adc()
 
