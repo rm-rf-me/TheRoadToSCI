@@ -1,5 +1,5 @@
 import time
-from utils.Device.util.XiaoMo import XiaoMo
+from utils.Device.util.XiaoMoRotate import XiaoMoRotate
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；
@@ -20,7 +20,7 @@ motor_config = {
 }
 
 
-class HY300mm(XiaoMo):
+class HY300mm(XiaoMoRotate):
     def __init__(self, args, comm, obj=1):
         super(HY300mm, self).__init__(args, motor_config, comm, angle_reverse=True)
         self.obj = obj

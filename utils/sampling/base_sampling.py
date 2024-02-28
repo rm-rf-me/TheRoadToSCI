@@ -3,6 +3,7 @@ from utils.Device.Device_HengYangGuangXue.LZP3 import LZP3
 from utils.Device.Device_HengYangGuangXue.LW_3 import LW3
 from utils.Device.Device_Ceyear.RX2438 import Rx2438
 from utils.Device.Device_Ceyear.TX1465 import Tx1465
+from utils.Device.Device_HengYangGuangXue.LDY_2_400 import LDY_2_400
 from utils.cmdIO import *
 from utils.Device.util.Serial import Serial
 
@@ -236,3 +237,15 @@ class SamplePitchand200RotationBase(SampleBase):
         self.pan200.init(acc, dec, v)
         self.pitch.init(acc, dec, v)
 
+class SampleDoubleStraight400Base(SampleBase):
+    def __init__(self, args):
+        super(SampleDoubleStraight400Base, self).__init__(args)
+        self.comm = Serial(args)
+        self.straight1 = LDY_2_400(args, self.comm, obj=2)
+        self.straight2 = LDY_2_400(args, self.comm, obj=3)
+        self.straight1.init_without_adc()
+        self.straight2.init_without_adc()
+
+    def init_straight(self, acc=5.0, dec=5.0, v=5.0):
+        self.straight1.init(acc, dec, v)
+        self.straight2.init(acc, dec, v)

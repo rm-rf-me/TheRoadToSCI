@@ -7,7 +7,7 @@ xiaomo_config = {
 }
 
 
-class XiaoMo:
+class XiaoMoStraight:
     def __init__(self, args, motor_config, comm, angle_reverse=False):
         '''
         LZP3控制接口，遵循rx323串口协议，控制命令遵循小墨科技MT22控制板命令
@@ -26,7 +26,8 @@ class XiaoMo:
         self.angle_reverse = angle_reverse
 
         # 角度脉冲数，和细分、步进角、转动比有关
-        self.angle_step = int((360 / self.motType * self.MStep * self.driveRatio) / 360)
+        # self.angle_step = int((360 / self.motType * self.MStep * self.driveRatio) / 360)
+        self.mm_step = int((360 / self.motType * self.MStep) / self.driveRatio)
 
     def init_without_adc(self):
         print("设置当前位置为零点 " + str(self.set_zero()) + ", now: " + str(self.get_p()))
@@ -61,19 +62,19 @@ class XiaoMo:
         '''
         cmd = "P_ACC_DEC_V " + str(self.obj)
         if self.safe['acc'] >= acc > 0:
-            cmd += " " + str(int(acc * self.angle_step))
+            cmd += " " + str(int(acc * self.mm_step))
         else:
             print("[ERROR] acc illegal")
             return "[ERROR] acc illegal"
 
         if self.safe['dec'] >= dec > 0:
-            cmd += " " + str(int(dec * self.angle_step))
+            cmd += " " + str(int(dec * self.mm_step))
         else:
             print("[ERROR] dec illegal")
             return "[ERROR] dec illegal"
 
         if self.safe['v'] >= v > 0:
-            cmd += " " + str(int(v * self.angle_step))
+            cmd += " " + str(int(v * self.mm_step))
         else:
             print("[ERROR] v illegal")
             return "[ERROR] v illegal"
@@ -94,7 +95,7 @@ class XiaoMo:
         '''
         if self.angle_reverse:
             angle = -angle
-        cmd = "P_REL " + str(self.obj) + " " + str(angle * self.angle_step)
+        cmd = "P_REL " + str(self.obj) + " " + str(angle * self.mm_step)
         self.comm.send(cmd)
         return self.comm.wait_receive()
 
@@ -106,7 +107,7 @@ class XiaoMo:
         '''
         if self.angle_reverse:
             angle = -angle
-        cmd = "P_ABS " + str(self.obj) + " " + str(angle * self.angle_step)
+        cmd = "P_ABS " + str(self.obj) + " " + str(angle * self.mm_step)
         self.comm.send(cmd)
         return self.comm.wait_receive()
 
@@ -143,9 +144,9 @@ class XiaoMo:
         '''
         cmd = "GET_P " + str(self.obj)
         self.comm.send(cmd)
-        return int(self.comm.wait_receive()) / self.angle_step
+        return int(self.comm.wait_receive()) / self.mm_step
 
     def get_v(self):
         cmd = "GET_V " + str(self.obj)
         self.comm.send(cmd)
-        return int(self.comm.wait_receive()) / self.angle_step
+        return int(self.comm.wait_receive()) / self.mm_step

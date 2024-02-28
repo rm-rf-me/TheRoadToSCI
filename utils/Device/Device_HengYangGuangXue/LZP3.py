@@ -1,5 +1,5 @@
 import time
-from utils.Device.util.XiaoMo import XiaoMo
+from utils.Device.util.XiaoMoRotate import XiaoMoRotate
 
 # 电机转盘基础参数设置
 #   MStep为细分数，与电机驱动板有关；
@@ -20,7 +20,7 @@ motor_config = {
 }
 
 
-class LZP3(XiaoMo):
+class LZP3(XiaoMoRotate):
     def __init__(self, args, comm, obj=0):
         super(LZP3, self).__init__(args, motor_config, comm)
         self.obj = obj
