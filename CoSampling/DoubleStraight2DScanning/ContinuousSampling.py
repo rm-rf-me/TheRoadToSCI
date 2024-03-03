@@ -1,6 +1,6 @@
 import copy
 
-from StepSonfig import DoubleStright2DScanningConfig
+from ContinuousConfig import ContinuousDoubleStright2DScanningConfig
 from utils.sampling.base_sampling import SampleDoubleStraight400Base
 from utils.cmdIO import *
 
@@ -19,8 +19,8 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
             'v',
             'max_posX',
             'max_posY',
-            'delay',
-            # 'strideX',
+            'sampling_gap_delay',
+            'strideX',
             # 'strideY',
             'step_block',
             'show_pic',
@@ -62,7 +62,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
             val_record = []
             posY_record = []
 
-            cmd_args['max_posY'] = direction_switch * max_posY
+            # cmd_args['max_posY'] = direction_switch * max_posY
             negY = 0
             if cmd_args['max_posY'] < 0:
                 negY = 1
@@ -103,7 +103,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
                 data['value'].append(float(val))
                 data[note].append(' ')
 
-                time.sleep(cmd_args['delay'])
+                time.sleep(cmd_args['sampling_gap_delay'])
 
             if cmd_args['show_pic'] or cmd_args['save_pic']:
                 fig = self.show_pic(posY_record, val_record, xlabel='tx on %s°' % cmd_args['max_posX'], ylabel='dBm',
@@ -137,7 +137,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
         return data
 
 if __name__ == '__main__':
-    config = DoubleStright2DScanningConfig()
+    config = ContinuousDoubleStright2DScanningConfig()
     args = config.getArgs()
     haha = ScatteringSpectrumSampling(args)
 

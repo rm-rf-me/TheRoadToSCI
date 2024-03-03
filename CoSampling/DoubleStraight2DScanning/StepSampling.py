@@ -1,6 +1,6 @@
 import copy
 
-from StepSonfig import DoubleStright2DScanningConfig
+from StepConfig import StepDoubleStright2DScanningConfig
 from utils.sampling.base_sampling import SampleDoubleStraight400Base
 from utils.cmdIO import *
 
@@ -146,7 +146,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
         return data
 
 if __name__ == '__main__':
-    config = DoubleStright2DScanningConfig()
+    config = StepDoubleStright2DScanningConfig()
     args = config.getArgs()
     haha = ScatteringSpectrumSampling(args)
 

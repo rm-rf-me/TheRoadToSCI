@@ -1,7 +1,7 @@
 from utils.config.base_config import BaseConfig
 
 
-class DoubleStright2DScanningConfig(BaseConfig):
+class StepDoubleStright2DScanningConfig(BaseConfig):
     def __init__(self):
         super().__init__()
 
