@@ -20,7 +20,7 @@ class LDY_2_400(XiaoMoStraight):
         self.obj = obj
 
 if __name__ == '__main__':
-    from CoSampling.DoubleStraight2DScanning.config import DoubleStright2DScanningConfig
+    from CoSampling.DoubleStraight2DScanning.StepSonfig import DoubleStright2DScanningConfig
     from utils.Device.util.Serial import Serial
 
     # 转盘连接测试
