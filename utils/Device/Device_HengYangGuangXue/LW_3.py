@@ -11,17 +11,17 @@ motor_config = {
     "MStep": 20,
     "DriveRatio": 288,
     "motType": 1.8,
-    "obj": 0,
+    "obj": 4,
     "safe": {
-        "acc": 10,
-        "dec": 10,
-        "v": 20
+        "acc": 5,
+        "dec": 5,
+        "v": 5
     }
 }
 
 
 class LW3(XiaoMoRotate):
-    def __init__(self, args, comm, obj=0):
+    def __init__(self, args, comm, obj=4):
         super(LW3, self).__init__(args, motor_config, comm)
         self.obj = obj
 
