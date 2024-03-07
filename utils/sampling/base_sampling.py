@@ -210,6 +210,16 @@ class Sample200PanBase(SampleBase):
     def init_pan(self, acc=5.0, dec=5.0, v=5.0):
         self.pan.init(acc, dec, v)
 
+class SamplePitchBase(SampleBase):
+    def __init__(self, args):
+        super(SamplePitchBase, self).__init__(args)
+        self.comm = Serial(args)
+        self.pan = LW3(args, self.comm)
+        self.pan.init_without_adc()
+
+    def init_pan(self, acc=1.0, dec=1.0, v=1.0):
+        self.pan.init(acc, dec, v)
+
 
 class Sample200and300PanBase(SampleBase):
     def __init__(self, args):
