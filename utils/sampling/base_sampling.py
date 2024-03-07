@@ -247,6 +247,16 @@ class SamplePitchand200RotationBase(SampleBase):
         self.pan200.init(acc, dec, v)
         self.pitch.init(acc, dec, v)
 
+class SampleSingleStraight400Base(SampleBase):
+    def __init__(self, args):
+        super(SampleSingleStraight400Base, self).__init__(args)
+        self.comm = Serial(args)
+        self.pan = LDY_2_400(args, self.comm, obj=2)
+        self.pan.init_without_adc()
+
+    def init_pan(self, acc=5.0, dec=5.0, v=5.0):
+        self.pan.init(acc, dec, v)
+
 class SampleDoubleStraight400Base(SampleBase):
     def __init__(self, args):
         super(SampleDoubleStraight400Base, self).__init__(args)
