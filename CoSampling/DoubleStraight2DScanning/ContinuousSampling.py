@@ -1,6 +1,6 @@
 import copy
 
-from config import DoubleStright2DScanningConfig
+from ContinuousConfig import ContinuousDoubleStright2DScanningConfig
 from utils.sampling.base_sampling import SampleDoubleStraight400Base
 from utils.cmdIO import *
 
@@ -19,9 +19,9 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
             'v',
             'max_posX',
             'max_posY',
-            'delay',
+            'sampling_gap_delay',
             'strideX',
-            'strideY',
+            # 'strideY',
             'step_block',
             'show_pic',
             'save_pic',
@@ -39,6 +39,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
             'time': [],
             'posX': [],
             'posY': [],
+            'vY': [],
             'value': [],
             note: []
         }
@@ -61,20 +62,31 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
             val_record = []
             posY_record = []
 
-            cmd_args['max_posY'] = direction_switch * max_posY
+            # cmd_args['max_posY'] = direction_switch * max_posY
             negY = 0
             if cmd_args['max_posY'] < 0:
                 negY = 1
 
             direction_switch = -direction_switch
 
+            self.straight2.p_rel(direction_switch * cmd_args['max_posY'])
+
+            tmp_now_pos = -1
+            tmp_last_pos = -2
+
             while 1:
+                if tmp_now_pos == tmp_last_pos:
+                    break
+
+                tmp_last_pos = tmp_now_pos
+
                 val = self.rx.getPower()
                 val_record.append(float(val))
 
                 now = time.time()
                 posX = self.straight1.get_p()
                 posY = self.straight2.get_p()
+                tmp_now_pos = posY
                 posY_record.append(posY)
                 if posX < 0:
                     posX = -posX
@@ -82,37 +94,16 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
                     posY = -posY
                 print(now, posX, posY, val)
 
+                vY = self.straight2.get_v()
+
                 data['time'].append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)))
                 data['posX'].append(posX)
                 data['posY'].append(posY)
+                data['vY'].append(vY)
                 data['value'].append(float(val))
                 data[note].append(' ')
 
-                if (negY and cmd_args['max_posY'] >= 0) or (not negY and cmd_args['max_posY'] <= 0):
-                    break
-
-                if negY:
-                    self.straight2.p_rel(-cmd_args['strideY'])
-                else:
-                    self.straight2.p_rel(cmd_args['strideY'])
-
-                posY = -1
-                tmpY = -2
-
-                while 1:
-                    if tmpY == posY:
-                        break
-                    tmpY = posY
-                    posY = self.straight2.get_p()
-
-                    time.sleep(0.1)
-
-                time.sleep(cmd_args['delay'])
-
-                if negY:
-                    cmd_args['max_posY'] += cmd_args['strideY']
-                else:
-                    cmd_args['max_posY'] -= cmd_args['strideY']
+                time.sleep(cmd_args['sampling_gap_delay'])
 
             if cmd_args['show_pic'] or cmd_args['save_pic']:
                 fig = self.show_pic(posY_record, val_record, xlabel='tx on %s°' % cmd_args['max_posX'], ylabel='dBm',
@@ -146,7 +137,7 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
         return data
 
 if __name__ == '__main__':
-    config = DoubleStright2DScanningConfig()
+    config = ContinuousDoubleStright2DScanningConfig()
     args = config.getArgs()
     haha = ScatteringSpectrumSampling(args)
 
