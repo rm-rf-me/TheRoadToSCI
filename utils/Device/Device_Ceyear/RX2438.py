@@ -1,5 +1,5 @@
 import pyvisa as visa
-from AnnularSampling_HYGX.StepConfig import StepConfig
+from AnnularSampling_HYGX200.StepConfig import StepConfig
 
 
 class Rx2438:

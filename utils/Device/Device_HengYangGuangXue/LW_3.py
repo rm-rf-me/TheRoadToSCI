@@ -28,7 +28,7 @@ class LW3(XiaoMoRotate):
 
 
 if __name__ == '__main__':
-    from AnnularSampling_HYGX.StepConfig import StepConfig
+    from AnnularSampling_HYGX200.StepConfig import StepConfig
 
     # 转盘连接测试
     config = StepConfig()
