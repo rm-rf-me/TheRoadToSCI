@@ -1,10 +1,31 @@
+import matplotlib
 import pandas as pd
 import matplotlib.pyplot as plt
 import PIL
+from mpl_toolkits.mplot3d import Axes3D
 
+matplotlib.use('TkAgg')
+def read_data(file_path):
+    df = pd.read_excel(file_path)
+    return df
+
+def draw_xyz_data(file_path):
+    df = read_data(file_path)
+    fig = plt.figure()
+    ax = plt.subplot(111, projection='3d')
+    X = []
+    Y = []
+    V = []
+    for i in range(len(df)):
+        X.append(df.iloc[i]['posX'])
+        Y.append(df.iloc[i]['posY'])
+        V.append(df.iloc[i]['value'])
+
+    ax.scatter(X, Y, V, c='r')
+    plt.show()
 
 def show_image(file_path):
-    df = pd.read_excel(file_path)
+    df = read_data(file_path)
     image = []
     image_dict = {}
     maxX = 0
@@ -35,4 +56,5 @@ def show_image(file_path):
 
 
 if __name__ == '__main__':
-    show_image("data/2024-02-28-22-02-44_test.xlsx")
+    # show_image("data/2024-02-28-22-02-44_test.xlsx")
+    draw_xyz_data('data/2024-03-05-15-11-32_no5第二次-这两次的速度应该都是5.xlsx')

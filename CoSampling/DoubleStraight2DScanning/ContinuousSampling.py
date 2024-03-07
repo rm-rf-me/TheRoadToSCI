@@ -53,6 +53,8 @@ class ScatteringSpectrumSampling(SampleDoubleStraight400Base):
 
         direction_switch = 1
 
+        self.straight2.set_acc_dec_v(cmd_args['acc'], cmd_args['dec'], cmd_args['v'])
+
         while 1:
             posX = self.straight1.get_p()
 
