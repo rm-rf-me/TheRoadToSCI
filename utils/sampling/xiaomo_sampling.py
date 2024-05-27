@@ -1,4 +1,4 @@
-from .base_sampling import SampleBase
+from .base_sampling import SampleBase, OnlyRxSampleBase
 from utils.cmdIO import *
 import matplotlib.pyplot as plt
 import copy
@@ -131,7 +131,7 @@ class ContinuousSamplingBase(SampleBase):
                 input("请移动表面：")
 
 
-class StepSamplingBase(SampleBase):
+class StepSamplingBase(OnlyRxSampleBase):
     def __init__(self, args):
         super().__init__(args)
 
