@@ -40,7 +40,7 @@ class Rx2438:
 
 def testTx():
     rm = visa.ResourceManager()
-    haha = rm.open_resource('TCPIP0::169.254.216.80::6666::SOCKET', read_termination='\n')
+    haha = rm.open_resource('TCPIP0::169.254.216.79::6666::SOCKET', read_termination='\n')
     print(haha)
     print(haha.query("*IDN?"))
 

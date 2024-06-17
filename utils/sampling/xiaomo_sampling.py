@@ -131,7 +131,7 @@ class ContinuousSamplingBase(SampleBase):
                 input("请移动表面：")
 
 
-class StepSamplingBase(OnlyRxSampleBase):
+class StepSamplingBase(SampleBase):
     def __init__(self, args):
         super().__init__(args)
 
