@@ -94,7 +94,7 @@ class XiaoMoRotate:
         '''
         if self.angle_reverse:
             angle = -angle
-        cmd = "P_REL " + str(self.obj) + " " + str(angle * self.angle_step)
+        cmd = "P_REL " + str(self.obj) + " " + str(int(angle * self.angle_step))
         self.comm.send(cmd)
         return self.comm.wait_receive()
 

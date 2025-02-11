@@ -21,8 +21,7 @@ class StepConfig(BaseConfig):
         self.parser.add_argument('--stride', type=float, default=1)
 
         # 从当前位置开始的最远转动角度，一定要小心不要打到东西；正数为逆时针，负数为顺时针
-        self.parser.add_argument('--max_angle', type=float, default=-4)
-
+        self.parser.add_argument('--max_angle', type=float, default=-30)
 
         # 单条数据测量结束后是否展示曲线
         self.parser.add_argument('--show_pic', type=bool, default=True)
